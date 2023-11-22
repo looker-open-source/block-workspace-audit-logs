@@ -1,0 +1,45 @@
+{
+  "label": "Google Workspace Analytics Audit Logs",
+  "category_label": "Models",
+  "branding": {
+    "image_uri": "https://fonts.gstatic.com/s/i/productlogos/drive_2020q4/v8/web-64dp/logo_drive_2020q4_color_2x_web_64dp.png",
+    "tagline": "Common analytics dashboarding templates for Google Workspace log data export to BigQuery"
+  },
+
+  "constants": {
+    "CONNECTION_NAME": {
+      "label": "Connection Name",
+      "value_constraint": "connection"
+    },
+    "PROJECT_ID": {
+      "label": "GCP Project Name"
+    },
+    "DATASET_NAME": {
+      "label": "Reporting Dataset Name"
+    },
+    "PRIMARY_DOMAIN": {
+      "label": "Primary Domain"
+    },
+    "SECONDARY_DOMAINS": {
+      "label": "List of Secondary Domains"
+    }
+  },
+  "user_attributes": {
+    "workspace_block_organizational_unit": {
+      "label": "Workspace Block Organizational Unit",
+      "description": "The OU to be scoped to each Looker user. The value should be in a JSON string format, so if your domain is my_org.com, then this should be inputted as [\"my_org.com\"]. For an administrator with access to all data, set the user attribute the primary domain to view all OU events as well as system generated and external user events. For lower level access, the user attribute can be set to the OU path, e.g. [\"my_org.com\",\"team_a\",\"foo\"].",
+      "type": "string",
+      "required": true,
+      "value_is_hidden": false,
+      "user_can_view": true,
+      "user_can_edit": false,
+      "default_value": ""
+    }
+  },
+  "models": [
+    {
+      "name": "workspace_audit_logs",
+      "connection_constant": "CONNECTION_NAME"
+    }
+  ]
+}
