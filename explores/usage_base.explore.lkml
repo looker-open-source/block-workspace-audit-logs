@@ -6,6 +6,7 @@ datagroup: usage_default {
 persist_with: usage_default
 
 explore: usage_base {
+  hidden:  yes
   extension: required
   view_name: usage
   # apply a filter to the partition column when user filters on date column
