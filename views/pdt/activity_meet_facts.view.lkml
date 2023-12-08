@@ -50,8 +50,8 @@ SELECT
   , e.calendar_event_title
   , TIMESTAMP_DIFF(meeting_end_time, meeting_start_time, SECOND) AS meeting_length_seconds
   , CASE WHEN total_video_send_seconds > 0 THEN true ELSE false END AS is_video_on
-  , total_video_send_seconds / count_total_participants AS video_time_per_person_seconds
-  , total_video_send_seconds / total_duration_all_users AS avg_per_video_time_on
+  , total_video_send_seconds / NULLIF(count_total_participants, 0) AS video_time_per_person_seconds
+  , total_video_send_seconds / NULLIF(total_duration_all_users, 0) AS avg_per_video_time_on
 FROM meetings
 LEFT JOIN (
   SELECT
