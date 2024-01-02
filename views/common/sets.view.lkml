@@ -88,4 +88,20 @@ view: sets {
       activity_meet_facts__participant_details.duration_seconds
     ]
   }
+
+  set: activity_rules {
+    fields: [
+      activity_default*,
+      activity.rules__rule_type,
+      activity.rules__data_source,
+      activity.rules__resource_type,
+      activity__rules__triggered_actions.action_type,
+      activity.rules__scan_type,
+      activity.rules__severity,
+      activity__rules__matched_detectors.detector_type,
+      activity__rules__matched_detectors.display_name,
+      activity.rules__matched_threshold,
+      activity.rules__matched_trigger
+    ]
+  }
 }

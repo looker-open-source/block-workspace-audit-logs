@@ -302,6 +302,110 @@ view: rules {
     description: "Type of space referred to by the space ID. Possible values:
       CHAT_DIRECT_MESSAGE, CHAT_EXTERNALLY_OWNED, CHAT_GROUP, CHAT_ROOM"
   }
+
+  measure: count_rule_match {
+    hidden: no
+    view_label: "Rules"
+    label: "Count of Rules Match"
+    type: count
+    allow_approximate_optimization: yes
+    filters: [
+      record_type: "rules",
+      event_name: "rule_match"
+    ]
+    drill_fields: [activity_rules*]
+  }
+
+  measure: count_rule_trigger {
+    hidden: no
+    view_label: "Rules"
+    label: "Count of Rules Triggered"
+    type: count
+    allow_approximate_optimization: yes
+    filters: [
+      record_type: "rules",
+      event_name: "rule_trigger"
+    ]
+    drill_fields: [activity_rules*]
+  }
+
+  measure: count_action_complete {
+    hidden: no
+    view_label: "Rules"
+    label: "Count of Actions Complete"
+    type: count
+    allow_approximate_optimization: yes
+    filters: [
+      record_type: "rules",
+      event_name: "action_complete"
+    ]
+    drill_fields: [activity_rules*]
+  }
+
+  measure: count_label_applied {
+    hidden: no
+    view_label: "Rules"
+    label: "Count of Labels Applied"
+    type: count
+    allow_approximate_optimization: yes
+    filters: [
+      record_type: "rules",
+      event_name: "label_applied"
+    ]
+    drill_fields: [activity_rules*]
+  }
+
+  measure: count_label_field_value_changed {
+    hidden: no
+    view_label: "Rules"
+    label: "Count of Label Field Values Changed"
+    type: count
+    allow_approximate_optimization: yes
+    filters: [
+      record_type: "rules",
+      event_name: "label_field_value_changed"
+    ]
+    drill_fields: [activity_rules*]
+  }
+
+  measure: count_label_removed {
+    hidden: no
+    view_label: "Rules"
+    label: "Count of Labels Removed"
+    type: count
+    allow_approximate_optimization: yes
+    filters: [
+      record_type: "rules",
+      event_name: "label_removed"
+    ]
+    drill_fields: [activity_rules*]
+  }
+
+  measure: count_sharing_blocked {
+    hidden: no
+    view_label: "Rules"
+    label: "Count of Sharing Blocked"
+    type: count
+    allow_approximate_optimization: yes
+    filters: [
+      record_type: "rules",
+      event_name: "sharing_blocked"
+    ]
+    drill_fields: [activity_rules*]
+  }
+
+  measure: count_user_view_blocked {
+    hidden: no
+    view_label: "Rules"
+    label: "Count of User View Blocked"
+    type: count
+    allow_approximate_optimization: yes
+    filters: [
+      record_type: "rules",
+      event_name: "user_view_blocked"
+    ]
+    drill_fields: [activity_rules*]
+  }
 }
 
 view: +activity__rules__actions {
