@@ -1,4 +1,4 @@
-This block contains metrics for the following services, which is filtered by `activity.record_type`: `gmail`, `drive`, `login`, and `meet`
+This block contains metrics for the following services, which is filtered by `activity.record_type`: `gmail`, `drive`, `login`, `meet`, and `rules`
 
 Schemas and API reference for each can be found here:
 
@@ -6,6 +6,7 @@ Schemas and API reference for each can be found here:
 - [login](https://developers.google.com/admin-sdk/reports/v1/appendix/activity/login)
 - [drive](https://developers.google.com/admin-sdk/reports/v1/appendix/activity/drive)
 - [meet](https://developers.google.com/admin-sdk/reports/v1/appendix/activity/meet)
+- [rules](https://developers.google.com/admin-sdk/reports/v1/appendix/activity/rules)
 
 ### Requirements
 
@@ -70,7 +71,7 @@ The refined folder contains the refined versions of the 2 views: [activity](./vi
   - `GENERATE_UUID() AS pk` for a primary key
 - Fields and customizations added here is _shared logic_ to be leveraged in all subsequent views
 
-The activity view is extended to specific views for each service: [activity_drive](./views/refined/activity_drive.view.lkml), [activity_gmail](./views/refined/activity_gmail.view.lkml), [activity_login](./views/refined/activity_login.view.lkml), [activity_meet](./views/refined/activity_meet.view.lkml)
+The activity view is extended to specific views for each service: [activity_drive](./views/refined/activity_drive.view.lkml), [activity_gmail](./views/refined/activity_gmail.view.lkml), [activity_login](./views/refined/activity_login.view.lkml), [activity_meet](./views/refined/activity_meet.view.lkml), [activity_rules](./views/refined/activity_rules.view.lkml)
 
 - Fields and customizations added here is _specific to each service_
 
@@ -129,11 +130,11 @@ The [activity_base](./explores/activity_base.explore.lkml) explore contains shar
 
 The [usage_base](./explores/usage_base.explore.lkml) explore follows the same logic to mirror filters applied to `usage.date` to the to the `_PARTITIONTIME` column. There is no ou data in the usage explores.
 
-### Activity [Drive, Gmail, Login, Meet]
+### Activity [Drive, Gmail, Login, Meet, Rules]
 
 The [activity](./explores/activity.explore.lkml) explore extends the base explore and is hidden and only used as a filter lookup.
 
-The [drive](./explores/activity_drive.explore.lkml), [gmail](./explores/activity_gmail.explore.lkml), [login](./explores/activity_login.explore.lkml), and [meet](./explores/activity_meet.explore.lkml) explores extends the base explore.
+The [drive](./explores/activity_drive.explore.lkml), [gmail](./explores/activity_gmail.explore.lkml), [login](./explores/activity_login.explore.lkml), [meet](./explores/activity_meet.explore.lkml), and [rules](./explores/activity_rules.explore.lkml)  explores extends the base explore.
 
 The [activity_consolidated](./explores/activity_consolidated.explore.lkml) is used for top level facts across all products
 

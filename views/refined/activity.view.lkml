@@ -209,26 +209,18 @@ view: +activity__org_unit_name_path {
 
 view: +activity__group_id {}
 view: +activity__token__scope {}
-view: +activity__rules__actions {}
 view: +activity__chat__target_users {}
-view: +activity__rules__access_level {}
 view: +activity__chrome__access_level {}
 view: +activity__mobile__ip_addresses {}
 view: +activity__classroom__guardians {}
 view: +activity__admin__whitelisted_groups {}
 view: +activity__classroom__invited_emails {}
 view: +activity__classroom__impacted_users {}
-view: +activity__rules__resource_recipients {}
 view: +activity__classroom__attachment_types {}
 view: +activity__groups__new_value_repeated {}
 view: +activity__groups__old_value_repeated {}
 view: +activity__token__scope_data {}
 view: +activity__chrome__triggered_rules_reason {}
 view: +activity__token__scope_data__product_bucket {}
-view: +activity__rules__applied_actions {}
 view: +activity__mobile__device_deactivation_reason {}
-view: +activity__rules__triggered_actions {}
-view: +activity__rules__matched_detectors {}
-view: +activity__rules__suppressed_actions {}
-view: +activity__rules__evaluation_context__evaluation_resource_ids {}
 view: +activity__voice__usage_billing_metric_label {}
