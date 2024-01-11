@@ -546,8 +546,8 @@ WITH calendar AS (
 )
 
 SELECT
-    active_docs_sheets_slides_30_day_rollup.calendar_date
-    , active_docs_sheets_slides_30_day_rollup.json_ou_path
+    calendar.date
+    , ou_lookup.json_ou_path
     -- 30 day active
     , active_all_30_day_rollup.all_active_30_days
     , active_docs_sheets_slides_30_day_rollup.document_active_30_days
@@ -578,70 +578,74 @@ SELECT
     , active_calendar_1_day_rollup.calendar_active_1_days
     , active_gmail_1_day_rollup.gmail_active_1_days
     , active_chat_1_day_rollup.chat_active_1_days
-FROM active_docs_sheets_slides_30_day_rollup
+FROM calendar
+CROSS JOIN ${ou_lookup.SQL_TABLE_NAME} AS ou_lookup
+LEFT JOIN active_docs_sheets_slides_30_day_rollup
+  ON calendar.date = active_docs_sheets_slides_30_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_docs_sheets_slides_30_day_rollup.json_ou_path
 LEFT JOIN active_docs_sheets_slides_7_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_docs_sheets_slides_7_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_docs_sheets_slides_7_day_rollup.json_ou_path
+  ON calendar.date = active_docs_sheets_slides_7_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_docs_sheets_slides_7_day_rollup.json_ou_path
 LEFT JOIN active_docs_sheets_slides_1_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_docs_sheets_slides_1_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_docs_sheets_slides_1_day_rollup.json_ou_path
+  ON calendar.date = active_docs_sheets_slides_1_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_docs_sheets_slides_1_day_rollup.json_ou_path
 LEFT JOIN active_drive_30_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_drive_30_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_drive_30_day_rollup.json_ou_path
+  ON calendar.date = active_drive_30_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_drive_30_day_rollup.json_ou_path
 LEFT JOIN active_drive_7_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_drive_7_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_drive_7_day_rollup.json_ou_path
+  ON calendar.date = active_drive_7_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_drive_7_day_rollup.json_ou_path
 LEFT JOIN active_drive_1_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_drive_1_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_drive_1_day_rollup.json_ou_path
+  ON calendar.date = active_drive_1_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_drive_1_day_rollup.json_ou_path
 LEFT JOIN active_meet_30_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_meet_30_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_meet_30_day_rollup.json_ou_path
+  ON calendar.date = active_meet_30_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_meet_30_day_rollup.json_ou_path
 LEFT JOIN active_meet_7_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_meet_7_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_meet_7_day_rollup.json_ou_path
+  ON calendar.date = active_meet_7_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_meet_7_day_rollup.json_ou_path
 LEFT JOIN active_meet_1_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_meet_1_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_meet_1_day_rollup.json_ou_path
+  ON calendar.date = active_meet_1_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_meet_1_day_rollup.json_ou_path
 LEFT JOIN active_calendar_30_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_calendar_30_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_calendar_30_day_rollup.json_ou_path
+  ON calendar.date = active_calendar_30_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_calendar_30_day_rollup.json_ou_path
 LEFT JOIN active_calendar_7_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_calendar_7_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_calendar_7_day_rollup.json_ou_path
+  ON calendar.date = active_calendar_7_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_calendar_7_day_rollup.json_ou_path
 LEFT JOIN active_calendar_1_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_calendar_1_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_calendar_1_day_rollup.json_ou_path
+  ON calendar.date = active_calendar_1_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_calendar_1_day_rollup.json_ou_path
 LEFT JOIN active_gmail_30_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_gmail_30_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_gmail_30_day_rollup.json_ou_path
+  ON calendar.date = active_gmail_30_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_gmail_30_day_rollup.json_ou_path
 LEFT JOIN active_gmail_7_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_gmail_7_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_gmail_7_day_rollup.json_ou_path
+  ON calendar.date = active_gmail_7_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_gmail_7_day_rollup.json_ou_path
 LEFT JOIN active_gmail_1_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_gmail_1_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_gmail_1_day_rollup.json_ou_path
+  ON calendar.date = active_gmail_1_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_gmail_1_day_rollup.json_ou_path
 LEFT JOIN active_chat_30_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_chat_30_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_chat_30_day_rollup.json_ou_path
+  ON calendar.date = active_chat_30_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_chat_30_day_rollup.json_ou_path
 LEFT JOIN active_chat_7_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_chat_7_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_chat_7_day_rollup.json_ou_path
+  ON calendar.date = active_chat_7_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_chat_7_day_rollup.json_ou_path
 LEFT JOIN active_chat_1_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_chat_1_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_chat_1_day_rollup.json_ou_path
+  ON calendar.date = active_chat_1_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_chat_1_day_rollup.json_ou_path
 LEFT JOIN active_all_30_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_all_30_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_all_30_day_rollup.json_ou_path
+  ON calendar.date = active_all_30_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_all_30_day_rollup.json_ou_path
 LEFT JOIN active_all_7_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_all_7_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_all_7_day_rollup.json_ou_path
+  ON calendar.date = active_all_7_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_all_7_day_rollup.json_ou_path
 LEFT JOIN active_all_1_day_rollup
-  ON active_docs_sheets_slides_30_day_rollup.calendar_date = active_all_1_day_rollup.calendar_date
-  AND active_docs_sheets_slides_30_day_rollup.json_ou_path = active_all_1_day_rollup.json_ou_path
+  ON calendar.date = active_all_1_day_rollup.calendar_date
+  AND ou_lookup.json_ou_path = active_all_1_day_rollup.json_ou_path
 GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29
 ;;
-    partition_keys: ["calendar_date"]
+    partition_keys: ["date"]
     datagroup_trigger: daily
   }
 
@@ -677,7 +681,7 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
     hidden: yes
     type: date
     datatype: date
-    sql: ${TABLE}.calendar_date ;;
+    sql: ${TABLE}.date ;;
   }
 
   dimension: json_ou_path {
@@ -695,7 +699,7 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                 Total [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.all_active_{% parameter timeframe %}_days ;;
     description: "Count of users who are active workspace users in the past N days"
   }
@@ -709,15 +713,19 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                 Docs [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.document_active_{% parameter timeframe %}_days ;;
     description: "Count of users who are active document users in the past N days"
     link: {
       label: "Drill to Drive Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email' %}
+      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
       {% assign document_filters = '&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=doc' %}
-      {{ base }}{{ document_filters }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+
+      {% assign activity_date_filter = _filters['activity.activity_date'] %}
+      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
+
+      {{ base }}{{ document_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -730,15 +738,19 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                Slides [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.presentation_active_{% parameter timeframe %}_days ;;
     description: "Count of users who are active presentation users in the past N days"
     link: {
       label: "Drill to Drive Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email' %}
+      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
       {% assign presentation_filters = '&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=slide' %}
-      {{ base }}{{ presentation_filters }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+
+      {% assign activity_date_filter = _filters['activity.activity_date'] %}
+      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
+
+      {{ base }}{{ presentation_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -751,15 +763,19 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                 Sheets [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.sheet_active_{% parameter timeframe %}_days ;;
     description: "Count of users who are active sheet users in the past N days"
     link: {
       label: "Drill to Drive Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email' %}
+      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
       {% assign sheet_filters = '&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=sheet' %}
-      {{ base }}{{ sheet_filters }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+
+      {% assign activity_date_filter = _filters['activity.activity_date'] %}
+      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
+
+      {{ base }}{{ sheet_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -773,15 +789,19 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                Drive [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.drive_active_{% parameter timeframe %}_days ;;
     description: "Count of users who are active drive users in the past N days"
     link: {
       label: "Drill to Drive Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email' %}
+      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
       {% assign drive_filters = '&f[activity.event_name]=\"storage_usage_update\",download,upload,move,trash,untrash' %}
-      {{ base }}{{ drive_filters }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+
+      {% assign activity_date_filter = _filters['activity.activity_date'] %}
+      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
+
+      {{ base }}{{ drive_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -794,16 +814,19 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                 Meet [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.meet_active_{% parameter timeframe %}_days ;;
-    html: <img src=”https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/meet/default/24px.svg” /> ;;
     description: "Count of users who are active meet users in the past N days"
     link: {
       label: "Drill to Meet Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/meet?fields=activity.activity_date,activity.email' %}
+      {% assign base = '/explore/workspace_audit_logs/meet?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
       {% assign meet_filters = '&f[activity.record_type]=meet' %}
-      {{ base }}{{ meet_filters }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+
+      {% assign activity_date_filter = _filters['activity.activity_date'] %}
+      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
+
+      {{ base }}{{ meet_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -816,7 +839,7 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                Calendar [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.calendar_active_{% parameter timeframe %}_days ;;
     description: "Count of users who are active calendar users in the past N days"
     # todo add drills once modeled
@@ -831,15 +854,19 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                 Gmail [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.gmail_active_{% parameter timeframe %}_days ;;
     description: "Count of users who are active gmail users in the past N days"
     link: {
       label: "Drill to Gmail Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/gmail?fields=activity.activity_date,activity.email' %}
+      {% assign base = '/explore/workspace_audit_logs/gmail?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
       {% assign gmail_filters = '&f[activity.gmail__message_info__action_type]=10,69,71' %}
-        {{ base }}{{ gmail_filters }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+
+      {% assign activity_date_filter = _filters['activity.activity_date'] %}
+      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
+
+      {{ base }}{{ gmail_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -852,7 +879,7 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
                Chat [1 Days]
             {% endif %}
             "
-    type: max
+    type: sum
     sql: ${TABLE}.chat_active_{% parameter timeframe %}_days ;;
     description: "Count of users who are active chat_act users in the past N days"
     # todo add drills once modeled
