@@ -2214,13 +2214,13 @@
     model: workspace_audit_logs
     explore: meet
     type: looker_grid
-    fields: [activity_meet_facts.start_date, activity_meet_facts.avg_per_video_time_on,
+    fields: [activity.activity_date, activity_meet_facts.avg_per_video_time_on,
       activity_meet_facts.total_screencast_send_minutes, meetings_with_video_on, meetings_with_video_off,
       activity_meet_facts.count_of_meetings]
-    fill_fields: [activity_meet_facts.start_date]
+    fill_fields: [activity.activity_date]
     filters:
       activity.record_type: meet
-    sorts: [activity_meet_facts.start_date desc]
+    sorts: [activity.activity_date desc]
     limit: 500
     column_limit: 50
     dynamic_fields:

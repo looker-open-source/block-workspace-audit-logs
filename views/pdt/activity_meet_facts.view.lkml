@@ -13,9 +13,9 @@ WITH meetings AS (
     , MAX(activity.meet.livestream_view_page_id) AS livestream_view_page_id
     , MIN(TIMESTAMP_SUB(TIMESTAMP_MICROS(activity.time_usec), INTERVAL activity.meet.duration_seconds SECOND)) AS meeting_start_time
     , MAX(TIMESTAMP_MICROS(activity.time_usec)) AS meeting_end_time
-    , COUNT(DISTINCT CASE WHEN activity.meet.is_external THEN activity.meet.identifier ELSE NULL END) AS count_external_participants
-    , COUNT(DISTINCT CASE WHEN NOT activity.meet.is_external THEN activity.meet.identifier ELSE NULL END) AS count_internal_participants
-    , COUNT(DISTINCT activity.meet.identifier) AS count_total_participants
+    , COUNT(DISTINCT CASE WHEN activity.meet.is_external THEN COALESCE(activity.meet.identifier, activity.meet.display_name) ELSE NULL END) AS count_external_participants
+    , COUNT(DISTINCT CASE WHEN NOT activity.meet.is_external THEN COALESCE(activity.meet.identifier, activity.meet.display_name) ELSE NULL END) AS count_internal_participants
+    , COUNT(DISTINCT COALESCE(activity.meet.identifier, activity.meet.display_name)) AS count_total_participants
     , SUM(activity.meet.screencast_send_seconds) AS total_screencast_send_seconds
     , SUM(activity.meet.video_send_seconds) AS total_video_send_seconds
     , SUM(TIMESTAMP_DIFF(TIMESTAMP_MICROS(activity.time_usec), TIMESTAMP_SUB(TIMESTAMP_MICROS(activity.time_usec), INTERVAL activity.meet.duration_seconds SECOND), SECOND)) AS total_duration_all_users

@@ -74,7 +74,6 @@ view: sets {
       activity_meet_facts.end_time,
       activity_meet_facts__participant_details.start_time,
       activity_meet_facts__participant_details.end_time,
-      activity_meet_facts__participant_details.endpoint_id,
       activity_meet_facts__participant_details.identifier_type,
       activity_meet_facts__participant_details.identifier,
       activity_meet_facts__participant_details.display_name,
