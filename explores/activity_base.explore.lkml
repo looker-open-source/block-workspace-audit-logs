@@ -1,5 +1,5 @@
 datagroup: activity_default {
-  sql_trigger: SELECT MAX(time_usec) FROM `@{PROJECT_ID}.@{DATASET_NAME}.activity` ;;
+  sql_trigger: SELECT MAX(time_usec) FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` ;;
   max_cache_age: "1 hour"
 }
 

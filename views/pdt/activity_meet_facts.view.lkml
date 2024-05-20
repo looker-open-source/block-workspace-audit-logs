@@ -41,7 +41,7 @@ WITH meetings AS (
           , NULL
         ) IGNORE NULLS
       ) AS participant_details
-  FROM `@{PROJECT_ID}.@{DATASET_NAME}.activity` as activity
+  FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` as activity
   WHERE activity.record_type = 'meet'
   GROUP BY 1
 )
@@ -57,7 +57,7 @@ LEFT JOIN (
   SELECT
     calendar.calendar.event_id
     , MAX(calendar.calendar.event_title) AS calendar_event_title
-  FROM `@{PROJECT_ID}.@{DATASET_NAME}.activity` as calendar
+  FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` as calendar
   WHERE calendar.record_type = 'calendar'
   GROUP BY 1
 ) AS e ON e.event_id =  meetings.calendar_event_id

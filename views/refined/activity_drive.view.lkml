@@ -129,16 +129,16 @@ view: drive {
     hidden: no
     view_label: "Drive"
     group_label: "Target User"
-    description: "Yes if the target user's domain is: '@{PRIMARY_DOMAIN}'"
+    description: "Yes if the target user's domain is: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}'"
     type: yesno
-    sql: ${target_user_domain} = '@{PRIMARY_DOMAIN}' ;;
+    sql: ${target_user_domain} = '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' ;;
   }
 
   dimension: is_target_user_secondary {
     hidden: no
     view_label: "Drive"
     group_label: "Target User"
-    description: "Yes if the target user's domain is in: '@{SECONDARY_DOMAINS}'"
+    description: "Yes if the target user's domain is in: '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}'"
     type: yesno
     sql: ${target_user_domain} IN UNNEST(SPLIT(${secondary_domains},',')) ;;
   }
@@ -147,7 +147,7 @@ view: drive {
     hidden: no
     view_label: "Drive"
     group_label: "Target User"
-    description: "Yes if the target user's domain is: '@{PRIMARY_DOMAIN}' or in '@{SECONDARY_DOMAINS}'"
+    description: "Yes if the target user's domain is: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' or in '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}'"
     type: yesno
     sql: ${drive__target_user} IS NULL OR ${is_target_user_primary} OR ${is_target_user_secondary} ;;
   }

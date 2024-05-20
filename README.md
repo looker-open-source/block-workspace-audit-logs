@@ -33,22 +33,27 @@ For an administrator with access to all data, set the user attribute the primary
 On block installation you will specify the following constants:
 
 ```
-constant: PROJECT_ID {
-value: "MY_PROJECT_NAME"
-export: override_required
+constant: WORKSPACE_ANALYTICS_CONNECTION_NAME {
+  value: "MY_BIGQUERY_CONNECTION"
+  export: override_required
 }
 
-constant: DATASET_NAME {
+constant: WORKSPACE_ANALYTICS_PROJECT_ID {
+  value: "MY_PROJECT_NAME"
+  export: override_required
+}
+
+constant: WORKSPACE_ANALYTICS_DATASET_NAME {
   value: "MY_DATASET_NAME"
   export: override_required
 }
 
-constant: PRIMARY_DOMAIN {
+constant: WORKSPACE_ANALYTICS_PRIMARY_DOMAIN {
   value: "MY_PRIMARY_DOMAIN.COM"
   export: override_required
 }
 
-constant: SECONDARY_DOMAINS {
+constant: WORKSPACE_ANALYTICS_SECONDARY_DOMAINS {
   value: "MY_SECONDARY_DOMAIN_1.COM,MY_SECONDARY_DOMAIN_2.COM,..."
   export: override_required
 }

@@ -1,4 +1,4 @@
-connection: "@{CONNECTION_NAME}"
+connection: "@{WORKSPACE_ANALYTICS_CONNECTION_NAME}"
 
 include: "/explores/*.explore"
 include: "/views/pdt/activity_aa.explore"

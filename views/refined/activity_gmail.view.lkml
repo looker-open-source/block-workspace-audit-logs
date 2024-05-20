@@ -140,25 +140,25 @@ view: gmail {
     hidden: no
     view_label: "Gmail"
     group_label: "Message Info"
-    description: "Yes if the source address domain is: '@{PRIMARY_DOMAIN}'"
+    description: "Yes if the source address domain is: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}'"
     type: yesno
-    sql: ${gmail__message_info__source__from_header_domain} = '@{PRIMARY_DOMAIN}' ;;
+    sql: ${gmail__message_info__source__from_header_domain} = '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' ;;
   }
 
   dimension: is_source_secondary {
     hidden: no
     view_label: "Gmail"
     group_label: "Message Info"
-    description: "Yes if the source address domain is in: '@{SECONDARY_DOMAINS}'"
+    description: "Yes if the source address domain is in: '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}'"
     type: yesno
-    sql: ${gmail__message_info__source__from_header_domain} IN UNNEST(SPLIT('@{SECONDARY_DOMAINS}',',')) ;;
+    sql: ${gmail__message_info__source__from_header_domain} IN UNNEST(SPLIT('@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}',',')) ;;
   }
 
   dimension: is_source_internal {
     hidden: no
     view_label: "Gmail"
     group_label: "Message Info"
-    description: "Yes if the source address domain is: '@{PRIMARY_DOMAIN}' or in '@{SECONDARY_DOMAINS}'"
+    description: "Yes if the source address domain is: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' or in '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}'"
     type: yesno
     sql: ${is_source_primary} OR ${is_source_secondary} ;;
   }
@@ -406,25 +406,25 @@ view: +activity__gmail__message_info__destination {
     hidden: no
     view_label: "Gmail"
     group_label: "Message Info"
-    description: "Yes if the destination address domain is: '@{PRIMARY_DOMAIN}'"
+    description: "Yes if the destination address domain is: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}'"
     type: yesno
-    sql: ${address_domain} = '@{PRIMARY_DOMAIN}' ;;
+    sql: ${address_domain} = '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' ;;
   }
 
   dimension: is_destination_secondary {
     hidden: no
     view_label: "Gmail"
     group_label: "Message Info"
-    description: "Yes if the destination address domain is in: '@{SECONDARY_DOMAINS}'"
+    description: "Yes if the destination address domain is in: '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}'"
     type: yesno
-    sql: ${address_domain} IN UNNEST(SPLIT('@{SECONDARY_DOMAINS}',',')) ;;
+    sql: ${address_domain} IN UNNEST(SPLIT('@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}',',')) ;;
   }
 
   dimension: is_destination_internal {
     hidden: no
     view_label: "Gmail"
     group_label: "Message Info"
-    description: "Yes if the destination address domain is: '@{PRIMARY_DOMAIN}' or in '@{SECONDARY_DOMAINS}'"
+    description: "Yes if the destination address domain is: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' or in '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}'"
     type: yesno
     sql: ${is_destination_primary} OR ${is_destination_secondary} ;;
   }

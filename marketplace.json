@@ -6,27 +6,31 @@
     "tagline": "Common analytics dashboarding templates for Google Workspace log data export to BigQuery"
   },
   "constants": {
-    "CONNECTION_NAME": {
+    "WORKSPACE_ANALYTICS_CONNECTION_NAME": {
       "label": "Connection Name",
       "value_constraint": "connection"
     },
-    "PROJECT_ID": {
-      "label": "GCP Project Name"
+    "WORKSPACE_ANALYTICS_PROJECT_ID": {
+      "label": "GCP Project Name",
+      "description": "This is the GCP project name where the Workspace service log have been exported to."
     },
-    "DATASET_NAME": {
-      "label": "Reporting Dataset Name"
+    "WORKSPACE_ANALYTICS_DATASET_NAME": {
+      "label": "Reporting Dataset Name",
+      "description": "This is the GCP dataset name within the project where the Workspace service log have been exported to."
     },
-    "PRIMARY_DOMAIN": {
-      "label": "Primary Domain"
+    "WORKSPACE_ANALYTICS_PRIMARY_DOMAIN": {
+      "label": "Primary Domain",
+      "description": "This is the primary domain for your Workspace organization. This can be found on the Workspace admin console (https://admin.google.com/ac/domains/manage)."
     },
-    "SECONDARY_DOMAINS": {
-      "label": "List of Secondary Domains"
+    "WORKSPACE_ANALYTICS_SECONDARY_DOMAINS": {
+      "label": "List of Secondary Domains",
+      "description": "This is a comma separated list of secondary domains for your Workspace organization. This can be found on the Workspace admin console (https://admin.google.com/ac/domains/manage)."
     }
   },
   "models": [
     {
       "name": "workspace_audit_logs",
-      "connection_constant": "CONNECTION_NAME"
+      "connection_constant": "WORKSPACE_ANALYTICS_CONNECTION_NAME"
     }
   ]
 }

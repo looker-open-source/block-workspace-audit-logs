@@ -22,7 +22,7 @@ usage_rolling_30_day AS (
       , usage.drive.num_google_spreadsheets_viewed AS num_sheets_viewed
       , usage.drive.num_google_presentations_viewed AS num_presentations_viewed
       , usage.drive.num_owned_items_with_visibility_shared_internally_added AS usage_drive_visibility_shared_internally_added
-    FROM  `@{PROJECT_ID}.@{DATASET_NAME}.usage` as usage
+    FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.usage` as usage
     INNER JOIN calendar
     ON DATE(usage.date) <= calendar.date
     AND DATE(usage.date) > DATE_SUB(calendar.date, INTERVAL 30 DAY)
@@ -44,7 +44,7 @@ usage_rolling_7_day AS (
       , usage.drive.num_google_spreadsheets_viewed AS num_sheets_viewed
       , usage.drive.num_google_presentations_viewed AS num_presentations_viewed
       , usage.drive.num_owned_items_with_visibility_shared_internally_added AS usage_drive_visibility_shared_internally_added
-    FROM  `@{PROJECT_ID}.@{DATASET_NAME}.usage` as usage
+    FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.usage` as usage
     INNER JOIN calendar
     ON DATE(usage.date) <= calendar.date
     AND DATE(usage.date) > DATE_SUB(calendar.date, INTERVAL 7 DAY)
@@ -66,7 +66,7 @@ usage_rolling_1_day AS (
       , usage.drive.num_google_spreadsheets_viewed AS num_sheets_viewed
       , usage.drive.num_google_presentations_viewed AS num_presentations_viewed
       , usage.drive.num_owned_items_with_visibility_shared_internally_added AS usage_drive_visibility_shared_internally_added
-    FROM  `@{PROJECT_ID}.@{DATASET_NAME}.usage` as usage
+    FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.usage` as usage
     INNER JOIN calendar
     ON DATE(usage.date) = calendar.date
     WHERE usage.record_type = 'user'
@@ -82,7 +82,7 @@ activity_sharers_30_day AS (
           CASE WHEN (LOWER(activity.event_type ) LIKE 'acl_change')
           AND (activity__drive__new_value <> 'none' OR activity__drive__new_value IS NULL)
         THEN activity.drive.doc_id  ELSE NULL END) AS activity_count_distinct_all_files_shares
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` as activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` as activity
   LEFT JOIN UNNEST(activity.drive.new_value) as activity__drive__new_value
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -103,7 +103,7 @@ activity_sharers_30_day AS (
           CASE WHEN (LOWER(activity.event_type ) LIKE 'acl_change')
           AND (activity__drive__new_value <> 'none' OR activity__drive__new_value IS NULL)
         THEN activity.drive.doc_id  ELSE NULL END) AS activity_count_distinct_all_files_shares
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` as activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` as activity
   LEFT JOIN UNNEST(activity.drive.new_value) as activity__drive__new_value
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -124,7 +124,7 @@ activity_sharers_30_day AS (
           CASE WHEN (LOWER(activity.event_type ) LIKE 'acl_change')
           AND (activity__drive__new_value <> 'none' OR activity__drive__new_value IS NULL)
         THEN activity.drive.doc_id  ELSE NULL END) AS activity_count_distinct_all_files_shares
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` as activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` as activity
   LEFT JOIN UNNEST(activity.drive.new_value) as activity__drive__new_value
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date

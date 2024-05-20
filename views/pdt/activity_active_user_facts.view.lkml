@@ -15,7 +15,7 @@ WITH calendar AS (
       , activity.drive.doc_type  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -44,7 +44,7 @@ WITH calendar AS (
       , activity.drive.doc_type  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -73,7 +73,7 @@ WITH calendar AS (
       , activity.drive.doc_type  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
@@ -102,7 +102,7 @@ WITH calendar AS (
       , 'drive'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -128,7 +128,7 @@ WITH calendar AS (
       , 'drive'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -154,7 +154,7 @@ WITH calendar AS (
       , 'drive'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
@@ -180,7 +180,7 @@ WITH calendar AS (
       , 'meet'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -205,7 +205,7 @@ WITH calendar AS (
       , 'meet'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -230,7 +230,7 @@ WITH calendar AS (
       , 'meet'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
@@ -255,7 +255,7 @@ WITH calendar AS (
       , 'calendar'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -280,7 +280,7 @@ WITH calendar AS (
       , 'calendar'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -305,7 +305,7 @@ WITH calendar AS (
       , 'calendar'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
@@ -330,7 +330,7 @@ WITH calendar AS (
       , 'chat'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -356,7 +356,7 @@ WITH calendar AS (
       , 'chat'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -382,7 +382,7 @@ WITH calendar AS (
       , 'chat'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
@@ -408,7 +408,7 @@ WITH calendar AS (
       , 'gmail'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -434,7 +434,7 @@ WITH calendar AS (
       , 'gmail'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
@@ -460,7 +460,7 @@ WITH calendar AS (
       , 'gmail'  AS product
       , activity.email  AS activity_email
       , DATE(TIMESTAMP_MICROS(activity.time_usec)) AS activity_date
-  FROM  `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+  FROM  `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
   LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name_path
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date

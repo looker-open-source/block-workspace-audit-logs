@@ -5,7 +5,7 @@ view: +activity {
   extends: [sets]
   derived_table: {
     sql:
-    SELECT *, _PARTITIONTIME, GENERATE_UUID() AS pk FROM `@{PROJECT_ID}.@{DATASET_NAME}.activity` ;;
+    SELECT *, _PARTITIONTIME, GENERATE_UUID() AS pk FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` ;;
   }
 
   dimension: pk {
@@ -84,13 +84,13 @@ view: +activity {
   dimension: primary_domain {
     hidden: yes
     type: string
-    sql: '@{PRIMARY_DOMAIN}' ;;
+    sql: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' ;;
   }
 
   dimension: secondary_domains {
     hidden: yes
     type: string
-    sql: '@{SECONDARY_DOMAINS}' ;;
+    sql: '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}' ;;
   }
 
   dimension: active_user_domain {
@@ -104,15 +104,15 @@ view: +activity {
   dimension: is_active_user_primary {
     hidden: no
     group_label: "Active User"
-    description: "Yes if the active user's domain is: '@{PRIMARY_DOMAIN}'"
+    description: "Yes if the active user's domain is: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}'"
     type: yesno
-    sql: ${active_user_domain} = '@{PRIMARY_DOMAIN}' ;;
+    sql: ${active_user_domain} = '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' ;;
   }
 
   dimension: is_active_user_secondary {
     hidden: no
     group_label: "Active User"
-    description: "Yes if the active user's domain is in: '@{SECONDARY_DOMAINS}'"
+    description: "Yes if the active user's domain is in: '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}'"
     type: yesno
     sql: ${active_user_domain} IN UNNEST(SPLIT(${secondary_domains},',')) ;;
   }
@@ -120,7 +120,7 @@ view: +activity {
   dimension: is_active_user_internal {
     hidden: no
     group_label: "Active User"
-    description: "Yes if the active user's domain is: '@{PRIMARY_DOMAIN}' or in '@{SECONDARY_DOMAINS}'"
+    description: "Yes if the active user's domain is: '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}' or in '@{WORKSPACE_ANALYTICS_SECONDARY_DOMAINS}'"
     type: yesno
     sql: ${is_active_user_primary} OR ${is_active_user_secondary} ;;
   }

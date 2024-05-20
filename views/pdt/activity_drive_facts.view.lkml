@@ -16,7 +16,7 @@ SELECT
   , COUNT(CASE WHEN activity.event_name = 'copy' THEN 1 ELSE NULL END) AS count_doc_copy
   , COUNT(CASE WHEN activity.event_name = 'download' THEN 1 ELSE NULL END) AS count_doc_download
   , COUNT(*) AS count_doc_activity
-FROM `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
 WHERE activity.record_type = 'drive'
 GROUP BY 1
 )

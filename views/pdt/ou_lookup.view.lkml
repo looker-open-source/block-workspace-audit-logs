@@ -10,14 +10,14 @@ view: ou_lookup {
         ),
     '"]') AS ou_id
   , TO_JSON_STRING(activity.org_unit_name_path) AS json_ou_path
-FROM `@{PROJECT_ID}.@{DATASET_NAME}.activity` as activity
+FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` as activity
 LEFT JOIN UNNEST(activity.org_unit_name_path) as activity__org_unit_name
 WHERE ARRAY_LENGTH(activity.org_unit_name_path) > 0
 AND activity__org_unit_name != ""
 AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
 GROUP BY 1,2,3)
 UNION ALL
-(SELECT '@{PRIMARY_DOMAIN}', '["@{PRIMARY_DOMAIN}"]', '[]') -- for external users and system generated logs
+(SELECT '@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}', '["@{WORKSPACE_ANALYTICS_PRIMARY_DOMAIN}"]', '[]') -- for external users and system generated logs
     ;;
     datagroup_trigger: daily
   }

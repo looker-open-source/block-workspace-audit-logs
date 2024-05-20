@@ -17,7 +17,7 @@ SELECT
     {% if drive_facts.is_deleted._in_query %}
       STRING_AGG(activity.event_name ORDER BY activity.time_usec DESC LIMIT 1) AS is_deleted,
     {% endif %}
-FROM `@{PROJECT_ID}.@{DATASET_NAME}.activity` AS activity
+FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
 WHERE activity.record_type = 'drive'
 GROUP BY 1
     ;;

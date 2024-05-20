@@ -3,7 +3,7 @@ include: "../raw/usage.view"
 view: +usage {
   derived_table: {
     sql:
-        SELECT *, _PARTITIONTIME, GENERATE_UUID() AS pk FROM `@{PROJECT_ID}.@{DATASET_NAME}.usage` ;;
+        SELECT *, _PARTITIONTIME, GENERATE_UUID() AS pk FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.usage` ;;
   }
 
   dimension: pk {
