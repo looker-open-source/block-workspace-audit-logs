@@ -17,8 +17,8 @@ Looker User Attribute:
 You will need create a user attribute that will be used to apply a filter for each Organizational Unit:
 
 ```
-Name: workspace_block_organizational_unit
-Label: Workspace Block Organizational Unit
+Name: workspace_analytics_organizational_unit
+Label: Workspace Analytics Organizational Unit
 Type: string
 User Access: view
 Hide values: no
@@ -98,7 +98,7 @@ The usage view is extended to a specific view for: [usage_customer](./views/refi
 
 #### OU Lookup
 
-- [ou_lookup](./views/pdt/ou_lookup.view.lkml) - This fact table shows the Organizational Unit tree and is inner joined on every Activity explore with an access filter in order to only display data based on a user's `workspace_block_organizational_unit` user attribute. The table is in the following format:
+- [ou_lookup](./views/pdt/ou_lookup.view.lkml) - This fact table shows the Organizational Unit tree and is inner joined on every Activity explore with an access filter in order to only display data based on a user's `workspace_analytics_organizational_unit` user attribute. The table is in the following format:
 
 | ou_name    | ou_id                         | json_ou_path            |
 | ---------- | ----------------------------- | ----------------------- |

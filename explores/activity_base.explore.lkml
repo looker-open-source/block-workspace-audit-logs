@@ -17,7 +17,7 @@ explore: activity_base {
   # user will only be be able to see activity data from users within a OU
   access_filter: {
     field: ou_lookup.ou_id
-    user_attribute: workspace_block_organizational_unit
+    user_attribute: workspace_analytics_organizational_unit
   }
   # apply a filter to the partition column when user filters on activity dimension group timeframes
   sql_always_where:

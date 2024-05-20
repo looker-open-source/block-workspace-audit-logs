@@ -151,9 +151,9 @@ view: +activity {
     group_label: "Active User"
     label: "User Attribute Organizational Unit Name"
     type: string
-    sql: REGEXP_EXTRACT_ALL('{{_user_attributes['workspace_block_organizational_unit']}}', '"(.*?)"')[
+    sql: REGEXP_EXTRACT_ALL('{{_user_attributes['workspace_analytics_organizational_unit']}}', '"(.*?)"')[
             OFFSET(
-              ARRAY_LENGTH(REGEXP_EXTRACT_ALL('{{_user_attributes['workspace_block_organizational_unit']}}', '"(.*?)"')) - 1
+              ARRAY_LENGTH(REGEXP_EXTRACT_ALL('{{_user_attributes['workspace_analytics_organizational_unit']}}', '"(.*?)"')) - 1
             )
           ]
     ;;
