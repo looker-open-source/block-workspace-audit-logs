@@ -163,3 +163,42 @@ All Dashboards have been build using the Activity table and do not include the U
 
 - [Security Audit](/dashboards/workspace_audit_logs::security_audit)
 - [Adoption and Collaboration](/dashboards/workspace_audit_logs::adoption_and_collaboration)
+
+# How do I customize this block to add my own data?
+
+You can leverage [refinements](https://cloud.google.com/looker/docs/lookml-refinements) to join your own data to this block, e.g. if you have a table which contains a mapping of your user emails and teams, this can be specified in the `refinements.lkml` file:
+
+```
+
+# include imported projects explores and views
+include: "/explores/**/*.explore.lkml"
+include: "/views/**/*.view.lkml"
+
+# refine the activity_base explore to refine all explores
+explore: +activity_base {
+  always_filter: {
+    filters: [my_teams.team: ""] # add to always_filter condition to make the filter appear by default
+  }
+
+  # join your table on primary key
+  join: my_teams {
+    sql_on: ${activity.email} = ${my_teams.email};;
+    type: left_outer
+    relationship: one_to_one
+  }
+}
+
+# create a view for the table you want to join
+view: my_teams {
+  sql_table_name: `my_project.my_dataset.table_name` ;;
+
+  dimension: email {
+    primary_key: yes
+    hidden: yes
+  }
+
+  dimension: team {
+    view_label: "Activity"
+  }
+}
+```
