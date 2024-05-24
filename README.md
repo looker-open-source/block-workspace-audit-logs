@@ -139,7 +139,7 @@ The [usage_base](./explores/usage_base.explore.lkml) explore follows the same lo
 
 The [activity](./explores/activity.explore.lkml) explore extends the base explore and is hidden and only used as a filter lookup.
 
-The [drive](./explores/activity_drive.explore.lkml), [gmail](./explores/activity_gmail.explore.lkml), [login](./explores/activity_login.explore.lkml), [meet](./explores/activity_meet.explore.lkml), and [rules](./explores/activity_rules.explore.lkml)  explores extends the base explore.
+The [drive](./explores/activity_drive.explore.lkml), [gmail](./explores/activity_gmail.explore.lkml), [login](./explores/activity_login.explore.lkml), [meet](./explores/activity_meet.explore.lkml), and [rules](./explores/activity_rules.explore.lkml) explores extends the base explore.
 
 The [activity_consolidated](./explores/activity_consolidated.explore.lkml) is used for top level facts across all products
 
@@ -156,7 +156,9 @@ Note there is an expected lag time of 1-3 days for usage log events to be availa
 The [model](./workspace_audit_logs.model.lkml) includes all the explore definitions.
 
 # Dashboards
+
 All Dashboards have been build using the Activity table and do not include the Usage table for the following reasons:
+
 1. The Activity table contains OU data which lets users filter by OU
 1. The Usage table is preaggregated data and does not allow users to drill down to row level events
 1. Activity log events are available within 10 minutes, however the Usage log events have a lag time of 1-3 days
@@ -164,7 +166,23 @@ All Dashboards have been build using the Activity table and do not include the U
 - [Security Audit](/dashboards/workspace_audit_logs::security_audit)
 - [Adoption and Collaboration](/dashboards/workspace_audit_logs::adoption_and_collaboration)
 
-# How do I customize this block to add my own data?
+# FAQS
+
+## What is an active user?
+
+Active users are defined per product:
+
+| Product  | SQL                                                                                                                                   | Active User Description                                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| docs     | WHERE activity.record_type = 'drive' AND activity.event_name IN ("edit", "view") AND activity.drive.doc_type = 'document'             | Viewing or editing any document                                                                                                |
+| sheets   | WHERE activity.record_type = 'drive' AND activity.event_name IN ("edit", "view") AND activity.drive.doc_type = 'spreadsheet'          | Viewing or editing any spreadsheet                                                                                             |
+| slides   | WHERE activity.record_type = 'drive' AND activity.event_name IN ("edit", "view") AND activity.drive.doc_type = 'presentation'         | Viewing or editing any presentation                                                                                            |
+| drive    | WHERE activity.record_type = 'drive' AND activity.event_name IN ("storage_usage_update","download","upload","move","trash","untrash") | Any of the following drive events: "storage_usage_update","download","upload","move","trash","untrash"                         |
+| meet     | WHERE activity.record_type = 'meet'                                                                                                   | All meet events                                                                                                                |
+| calendar | WHERE activity.record_type = 'calendar'                                                                                               | All calendar events                                                                                                            |
+| gmail    | WHERE activity.record_type = 'gmail' AND gmail.message_info.action_type IN (10, 69, 71)                                               | Any of the following gmail actions: sending a message, changing spam classification, and any post delivery actions on messages |
+
+## How do I customize this block to add my own data?
 
 You can leverage [refinements](https://cloud.google.com/looker/docs/lookml-refinements) to join your own data to this block, e.g. if you have a table which contains a mapping of your user emails and teams, this can be specified in the `refinements.lkml` file:
 
