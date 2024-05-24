@@ -122,6 +122,9 @@
     interpolation: linear
     hidden_pivots: {}
     defaults_version: 1
+    note_state: collapsed
+    note_display: hover
+    note_text: 'See block README for active user definitions: https://github.com/looker-open-source/block-workspace-audit-logs?tab=readme-ov-file#what-is-an-active-user'
     listen:
       Active User Definition: activity_active_user_facts.timeframe
       Activity Date: activity.activity_date
@@ -611,6 +614,9 @@
     totals_color: "#808080"
     hidden_pivots: {}
     defaults_version: 1
+    note_state: collapsed
+    note_display: hover
+    note_text: 'See block README for active user definitions: https://github.com/looker-open-source/block-workspace-audit-logs?tab=readme-ov-file#what-is-an-active-user'
     listen:
       Active User Definition: activity_active_user_facts.timeframe
       Activity Date: activity.activity_date
