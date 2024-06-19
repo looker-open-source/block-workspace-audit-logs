@@ -719,13 +719,10 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
     link: {
       label: "Drill to Drive Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
-      {% assign document_filters = '&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=doc' %}
+      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.email,activity.count,activity.list_of_event_types,activity.list_of_event_names&query_timezone=UTC' %}
+      {% assign document_filters = '&f[activity.is_active_user_internal]=Yes&&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=doc' %}
 
-      {% assign activity_date_filter = _filters['activity.activity_date'] %}
-      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
-
-      {{ base }}{{ document_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+      {{ base }}{{ document_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={% parameter timeframe %}+days&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -744,13 +741,10 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
     link: {
       label: "Drill to Drive Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
-      {% assign presentation_filters = '&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=slide' %}
+      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.email,activity.count,activity.list_of_event_types,activity.list_of_event_names&query_timezone=UTC' %}
+      {% assign presentation_filters = '&f[activity.is_active_user_internal]=Yes&&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=slide' %}
 
-      {% assign activity_date_filter = _filters['activity.activity_date'] %}
-      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
-
-      {{ base }}{{ presentation_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+      {{ base }}{{ presentation_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={% parameter timeframe %}+days&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -769,13 +763,10 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
     link: {
       label: "Drill to Drive Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
-      {% assign sheet_filters = '&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=sheet' %}
+      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.email,activity.count,activity.list_of_event_types,activity.list_of_event_names&query_timezone=UTC' %}
+      {% assign sheet_filters = '&f[activity.is_active_user_internal]=Yes&&f[activity.record_type]=drive&f[activity.event_name]=edit,view&f[activity.drive__doc_type]=sheet' %}
 
-      {% assign activity_date_filter = _filters['activity.activity_date'] %}
-      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
-
-      {{ base }}{{ sheet_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+      {{ base }}{{ sheet_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={% parameter timeframe %}+days&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -795,13 +786,10 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
     link: {
       label: "Drill to Drive Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
-      {% assign drive_filters = '&f[activity.event_name]=\"storage_usage_update\",download,upload,move,trash,untrash' %}
+      {% assign base = '/explore/workspace_audit_logs/drive?fields=activity.email,activity.count,activity.list_of_event_types,activity.list_of_event_names&query_timezone=UTC' %}
+      {% assign drive_filters = '&f[activity.is_active_user_internal]=Yes&&f[activity.event_name]=\"storage_usage_update\",download,upload,move,trash,untrash' %}
 
-      {% assign activity_date_filter = _filters['activity.activity_date'] %}
-      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
-
-      {{ base }}{{ drive_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+      {{ base }}{{ drive_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={% parameter timeframe %}+days&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -820,13 +808,10 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
     link: {
       label: "Drill to Meet Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/meet?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
-      {% assign meet_filters = '&f[activity.record_type]=meet' %}
+      {% assign base = '/explore/workspace_audit_logs/meet?fields=activity.email,activity.count,activity.list_of_event_types,activity.list_of_event_names&query_timezone=UTC' %}
+      {% assign meet_filters = '&f[activity.is_active_user_internal]=Yes&&f[activity.record_type]=meet' %}
 
-      {% assign activity_date_filter = _filters['activity.activity_date'] %}
-      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
-
-      {{ base }}{{ meet_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+      {{ base }}{{ meet_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={% parameter timeframe %}+days&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
@@ -860,13 +845,10 @@ GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
     link: {
       label: "Drill to Gmail Explore"
       url: "
-      {% assign base = '/explore/workspace_audit_logs/gmail?fields=activity.activity_date,activity.email&query_timezone=UTC' %}
-      {% assign gmail_filters = '&f[activity.gmail__message_info__action_type]=10,69,71' %}
+      {% assign base = '/explore/workspace_audit_logs/gmail?fields=activity.email,activity.count,activity.list_of_event_types,activity.list_of_event_names&query_timezone=UTC' %}
+      {% assign gmail_filters = '&f[activity.is_active_user_internal]=Yes&&f[activity.gmail__message_info__action_type]=10,69,71' %}
 
-      {% assign activity_date_filter = _filters['activity.activity_date'] %}
-      {% if row['activity.activity_date'] %} {% assign activity_date_filter = activity.activity_date._value %} {% endif %}
-
-      {{ base }}{{ gmail_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={{ activity_date_filter | url_encode }}&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
+      {{ base }}{{ gmail_filters }}&f[activity.email]=-EMPTY&f[activity.activity_date]={% parameter timeframe %}+days&f[activity.json_ou_path]={{ _filters['activity.json_ou_path'] | url_encode }}"
     }
   }
 
