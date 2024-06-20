@@ -21,6 +21,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 30 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'drive'
   AND activity.event_name IN ("edit", "view")
   AND activity.drive.doc_type IN ('document', 'presentation', 'spreadsheet')
@@ -50,6 +51,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 7 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'drive'
   AND activity.event_name IN ("edit", "view")
   AND activity.drive.doc_type IN ('document', 'presentation', 'spreadsheet')
@@ -78,6 +80,7 @@ WITH calendar AS (
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'drive'
   AND activity.event_name IN ("edit", "view")
   AND activity.drive.doc_type IN ('document', 'presentation', 'spreadsheet')
@@ -108,6 +111,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 30 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'drive'
   AND activity.event_name IN ("storage_usage_update","download","upload","move","trash","untrash")
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
@@ -134,6 +138,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 7 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'drive'
   AND activity.event_name IN ("storage_usage_update","download","upload","move","trash","untrash")
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
@@ -159,6 +164,7 @@ WITH calendar AS (
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'drive'
   AND activity.event_name IN ("storage_usage_update","download","upload","move","trash","untrash")
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
@@ -186,6 +192,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 30 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'meet' -- all events are considered for active usage
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
   GROUP BY 1,2,3,4,5
@@ -211,6 +218,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 7 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'meet' -- all events are considered for active usage'
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
   GROUP BY 1,2,3,4,5
@@ -235,6 +243,7 @@ WITH calendar AS (
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'meet'  -- all events are considered for active usage
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
   GROUP BY 1,2,3,4,5
@@ -261,6 +270,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 30 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'calendar' -- all events are considered for active usage
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
   GROUP BY 1,2,3,4,5
@@ -286,6 +296,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 7 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'calendar' -- all events are considered for active usage
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
   GROUP BY 1,2,3,4,5
@@ -310,6 +321,7 @@ WITH calendar AS (
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'calendar' -- all events are considered for active usage
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
   GROUP BY 1,2,3,4,5
@@ -336,6 +348,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 30 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'chat'
   AND activity.event_type = 'user_action'
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
@@ -362,6 +375,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 7 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'chat'
   AND activity.event_type = 'user_action'
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
@@ -387,6 +401,7 @@ WITH calendar AS (
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'chat'
   AND activity.event_type = 'user_action'
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
@@ -414,6 +429,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 30 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'gmail'
   AND gmail.message_info.action_type IN (10, 69, 71)
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
@@ -440,6 +456,7 @@ WITH calendar AS (
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) <= calendar.date
     AND DATE(TIMESTAMP_MICROS(activity.time_usec)) > DATE_SUB(calendar.date, INTERVAL 7 DAY)
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'gmail'
   AND gmail.message_info.action_type IN (10, 69, 71)
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
@@ -465,6 +482,7 @@ WITH calendar AS (
   INNER JOIN calendar
     ON DATE(TIMESTAMP_MICROS(activity.time_usec)) = calendar.date
   WHERE activity__org_unit_name_path IS NOT NULL
+  AND activity.email LIKE '%@%.%'
   AND activity.record_type = 'gmail'
   AND gmail.message_info.action_type IN (10, 69, 71)
   AND DATE(TIMESTAMP_MICROS(activity.time_usec)) >= '2023-01-01'
