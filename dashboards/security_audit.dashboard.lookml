@@ -872,6 +872,7 @@
     fields: [activity.count_of_docs, activity.email, activity.count_distinct_external_user_shares]
     filters:
       activity.record_type: drive
+      activity.is_active_user_internal: 'Yes'
       activity.is_target_user_internal: 'No'
       activity.drive__target_user: "-NULL"
       activity.email: "-NULL"
