@@ -4,7 +4,7 @@
   "branding": {
     "badge": "Beta",
     "image_uri": "https://fonts.gstatic.com/s/i/productlogos/drive_2020q4/v8/web-64dp/logo_drive_2020q4_color_2x_web_64dp.png",
-    "tagline": "Common analytics dashboarding templates for Google Workspace log data export to BigQuery"
+    "tagline": "Get insight into the areas of Google Workspace adoption, collaboration and security"
   },
   "constants": {
     "WORKSPACE_ANALYTICS_CONNECTION_NAME": {

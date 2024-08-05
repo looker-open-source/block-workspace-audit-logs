@@ -1,4 +1,8 @@
-This block contains metrics for the following services, which is filtered by `activity.record_type`: `gmail`, `drive`, `login`, `meet`, and `rules`
+# Google Workspace Analytics Audit Logs [BETA]
+
+The reports made available in the Workspace Analytics Block enable customers to get insight into the areas of Workspace Adoption, Collaboration and Security. This allows customers to review the effectiveness of Google Workspace within their organization and highlights any areas that may need improvement through targeted training outreach or other specific guidance.
+
+This block contains metrics for the following services, which is filtered by `activity.record_type`: gmail, drive, login, meet, and rules
 
 Schemas and API reference for each can be found here:
 
@@ -10,41 +14,50 @@ Schemas and API reference for each can be found here:
 
 ### Requirements
 
-Service Log Exports to BigQuery:
-This block requires setting up [service log exports to BigQuery](https://support.google.com/a/answer/9079365). Once this is set up, there will be 2 tables created in the BigQuery project and dataset specified: "activity" and "usage"
+1. Service Log Exports to BigQuery:
 
-Looker User Attribute:
-You will need create a user attribute that will be used to apply a filter for each Organizational Unit:
+   - This block requires setting up [service log exports to BigQuery](https://support.google.com/a/answer/9079365). Once this is set up, there will be 2 tables created in the BigQuery project and dataset specified: "activity" and "usage"
 
-```
-Name: workspace_analytics_organizational_unit
-Label: Workspace Analytics Organizational Unit
-Type: string
-User Access: view
-Hide values: no
-```
+1. Looker User Attribute:
 
-The value should be in a JSON string format, so if your domain is `my_org.com`, then this should be inputted as `["my_org.com"]`.
+   - You will need create a user attribute that will be used to apply a filter for each Organizational Unit:
 
-For an administrator with access to all data, set the user attribute the primary domain to view all OU events as well as system generated and external user events. For lower level access, the user attribute can be set to the OU path, e.g. `["my_org.com","team_a","foo"]`
+     ```
+     Name: workspace_analytics_organizational_unit
+     Label: Workspace Analytics Organizational Unit
+     Type: string
+     User Access: view
+     Hide values: no
+     ```
 
-# Manifest
+   - The value should be in a JSON string format, so if your domain is `my_org.com`, then this should be inputted as `["my_org.com"]`
 
-On block installation you will specify the following constants:
+   - For an administrator with access to all data, set the user attribute the primary domain to view all OU events as well as system generated and external user events. For lower level access, the user attribute can be set to the OU path, e.g. `["my_org.com","team_a","foo"]`. See example below for the "OU Lookup" derived table
+
+1. Custom Visualizations (Optional):
+   - Go to Marketplace > Discover and search for "Chord Visualization" and install
+   - Go to Marketplace > Discover and search for "Sankey Visualization" and install
+   - These visualizations are used on the Adoption and Collaboration dashboard, but are not required for the block to function
+
+### Installation
+
+#### Constants
+
+On block installation you will need to specify the following constants:
 
 ```
 constant: WORKSPACE_ANALYTICS_CONNECTION_NAME {
-  value: "MY_BIGQUERY_CONNECTION"
+  value: "bigquery"
   export: override_required
 }
 
 constant: WORKSPACE_ANALYTICS_PROJECT_ID {
-  value: "MY_PROJECT_NAME"
+  value: "GCP Project ID"
   export: override_required
 }
 
 constant: WORKSPACE_ANALYTICS_DATASET_NAME {
-  value: "MY_DATASET_NAME"
+  value: "GCP BigQuery Dataset Name"
   export: override_required
 }
 
@@ -59,7 +72,22 @@ constant: WORKSPACE_ANALYTICS_SECONDARY_DOMAINS {
 }
 ```
 
-# Views
+- Select the BigQuery connection that has access to the Workspace dataset (as specified in [these docs](https://support.google.com/a/answer/9079365?hl=en)). Looker will require PDTs to be enabled on this connection to create fact tables
+- Enter the Workspace **project name** and **dataset name** for the activity table, e.g. if the activity table is `bq-project.my-dataset.activity` then enter:
+  ```
+  GCP Project Name: bq-project
+  Reporting Dataset Name: my-dataset
+  ```
+- The Primary and Secondary domains can be found on the [Workspace Admin Console](https://admin.google.com/ac/domains/manage)
+
+#### Model Access
+
+- Ensure that all users that want to leverage this block have access to the newly created model (this will need to be done after the block is installed)
+- Users will need to have a Looker role that either includes all model sets (e.g. an admin) or have a new role created which includes the model `workspace_audit_logs`
+
+# Files
+
+## Views
 
 ### Raw Tables
 
@@ -74,16 +102,16 @@ The refined folder contains the refined versions of the 2 views: [activity](./vi
 - These tables are queried as a derived table and include 2 additional columns:
   - A hidden `_PARTITIONTIME` column used for filtering on the partition date
   - `GENERATE_UUID() AS pk` for a primary key
-- Fields and customizations added here is _shared logic_ to be leveraged in all subsequent views
+- Fields and customizations added here is **shared logic** to be leveraged in all subsequent views
 
 The activity view is extended to specific views for each service: [activity_drive](./views/refined/activity_drive.view.lkml), [activity_gmail](./views/refined/activity_gmail.view.lkml), [activity_login](./views/refined/activity_login.view.lkml), [activity_meet](./views/refined/activity_meet.view.lkml), [activity_rules](./views/refined/activity_rules.view.lkml)
 
-- Fields and customizations added here is _specific to each service_
+- Fields and customizations added here is **specific to each service**
 
 The usage view is extended to a specific view for: [usage_customer](./views/refined/usage_customer.view.lkml) and [usage_user](./views/refined/usage_user.view.lkml)
 
-- Fields and customizations added here is _specific to each usage view_
-- The Customers usage report aggregates Google Workspace service usage information, for all users, across an entire domain. The user usage report returns Google Workspace service usage information for a particular user in your domain
+- Fields and customizations added here is **specific to each usage view**
+- The customer usage report aggregates Google Workspace service usage information, for all users, across an entire domain. The user usage report returns Google Workspace service usage information for a particular user in your domain
 
 ### PDTs
 
@@ -125,7 +153,7 @@ Note that ou_name is not unique (e.g. team_a and team_b both contain a "foo") so
 
 The common folder contains [sets](./views/common/sets.view.lkml) that are shared between the views.
 
-# Explores
+## Explores
 
 The explore folder contains the join logic between the views.
 
@@ -141,7 +169,7 @@ The [activity](./explores/activity.explore.lkml) explore extends the base explor
 
 The [drive](./explores/activity_drive.explore.lkml), [gmail](./explores/activity_gmail.explore.lkml), [login](./explores/activity_login.explore.lkml), [meet](./explores/activity_meet.explore.lkml), and [rules](./explores/activity_rules.explore.lkml) explores extends the base explore.
 
-The [activity_consolidated](./explores/activity_consolidated.explore.lkml) is used for top level facts across all products
+The [activity_consolidated](./explores/activity_consolidated.explore.lkml) is used for top level facts across all products.
 
 ### Usage [Customer, User]
 
@@ -149,13 +177,18 @@ The [usage_customer](./explores/usage_customer.explore.lkml) explore contains ag
 
 The [usage_user](./explores/usage_user.explore.lkml) explore contains aggregated user metrics across all products, rolled up by user email and date.
 
-Note there is an expected lag time of 1-3 days for usage log events to be available.
-
-# Model
+## Model
 
 The [model](./workspace_audit_logs.model.lkml) includes all the explore definitions.
 
-# Dashboards
+## Dashboards
+
+- [Adoption and Collaboration](/dashboards/workspace_audit_logs::adoption_and_collaboration) - This dashboard contains internal utilization metrics on product usage activity, collaboration between Organizational Units, andfile sharing / creation
+- [Security Audit](/dashboards/workspace_audit_logs::security_audit) - This dashboard has an external focus around how workspace is interacting with users outside your org, focusing on events like data exfiltration, suspicious events, and spam emails
+
+# FAQS
+
+## Which tables are being used in the dashboards?
 
 All Dashboards have been build using the Activity table and do not include the Usage table for the following reasons:
 
@@ -163,10 +196,11 @@ All Dashboards have been build using the Activity table and do not include the U
 1. The Usage table is preaggregated data and does not allow users to drill down to row level events
 1. Activity log events are available within 10 minutes, however the Usage log events have a lag time of 1-3 days
 
-- [Security Audit](/dashboards/workspace_audit_logs::security_audit)
-- [Adoption and Collaboration](/dashboards/workspace_audit_logs::adoption_and_collaboration)
+The Usage explores are hidden by default however can still be accessed as required
 
-# FAQS
+## Why am I seeing a small variance in counts?
+
+For performance reasons, this block utilizes [allow_approximate_optimization](https://cloud.google.com/looker/docs/reference/param-field-allow-approximate-optimization) to leverage BigQuery's HLL++ functions to approximate distinct counts. This enables distinct count with the aggregate tables, thus boosting query performance, though with 2% potential error.
 
 ## What is an active user?
 
@@ -182,27 +216,29 @@ Active users are defined per product:
 | calendar | WHERE activity.record_type = 'calendar'                                                                                               | All calendar events                                                                                                            |
 | gmail    | WHERE activity.record_type = 'gmail' AND gmail.message_info.action_type IN (10, 69, 71)                                               | Any of the following gmail actions: sending a message, changing spam classification, and any post delivery actions on messages |
 
+## Can I filter by Groups instead of OUs?
+
+OUs are the only available user mapping that comes out of the box as it is included in each row of the table. If you want to arrange your users in a different group, this can be achieved by using refinements (see example below).
+
 ## How do I customize this block to add my own data?
 
 You can leverage [refinements](https://cloud.google.com/looker/docs/lookml-refinements) to join your own data to this block, e.g. if you have a table which contains a mapping of your user emails and teams, this can be specified in the `refinements.lkml` file:
 
 ```
+# include imported project's explores and views
+include: "//workspace-audit-logs/explores/**/*.explore.lkml"
+include: "//workspace-audit-logs/views/**/*.view.lkml"
 
-# include imported projects explores and views
-include: "/explores/**/*.explore.lkml"
-include: "/views/**/*.view.lkml"
-
-# refine the activity_base explore to refine all explores
+# refine the activity_base explore to modify all explores
 explore: +activity_base {
   always_filter: {
     filters: [my_teams.team: ""] # add to always_filter condition to make the filter appear by default
   }
 
-  # join your table on primary key
   join: my_teams {
     sql_on: ${activity.email} = ${my_teams.email};;
     type: left_outer
-    relationship: one_to_one
+    relationship: many_to_one
   }
 }
 
@@ -213,10 +249,12 @@ view: my_teams {
   dimension: email {
     primary_key: yes
     hidden: yes
+    sql: ${TABLE}.email ;;
   }
 
   dimension: team {
     view_label: "Activity"
+    sql: ${TABLE}.team ;;
   }
 }
 ```
