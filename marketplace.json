@@ -3,7 +3,7 @@
   "category_label": "Models",
   "branding": {
     "badge": "Beta",
-    "image_uri": "https://fonts.gstatic.com/s/i/productlogos/drive_2020q4/v8/web-64dp/logo_drive_2020q4_color_2x_web_64dp.png",
+    "image_uri": "https://marketplace-api.looker.com/block-icons/gworkspace.png",
     "tagline": "Get insight into the areas of Google Workspace adoption, collaboration and security"
   },
   "constants": {
