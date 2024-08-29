@@ -1,5 +1,7 @@
 # Google Workspace Analytics Audit Logs [BETA]
+
 **This is not an oficially supported Google product.**
+
 The reports made available in the Workspace Analytics Block enable customers to get insight into the areas of Workspace Adoption, Collaboration and Security. This allows customers to review the effectiveness of Google Workspace within their organization and highlights any areas that may need improvement through targeted training outreach or other specific guidance.
 
 This block contains metrics for the following services, which is filtered by `activity.record_type`: gmail, drive, login, meet, and rules
