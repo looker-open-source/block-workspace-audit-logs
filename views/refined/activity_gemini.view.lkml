@@ -16,42 +16,17 @@ view: gemini {
     ]
   }
 
-  parameter: dynamic_metric {
-    view_label: "Gemini"
-    label: "Dynamic Metric"
-    description: "Select whether to count the total number of unique users or the total number of events."
-    type: unquoted
-    hidden: no
-    default_value: "events"
-    allowed_value: {
-      value: "users"
-      label: "Users"
-    }
-    allowed_value: {
-      value: "events"
-      label: "Events"
-    }
-  }
-
-  dimension_group: activity {
-    timeframes: [
-      raw,
-      time,
-      hour,
-      date,
-      day_of_week,
-      week,
-      month,
-      quarter,
-      year,
-      hour_of_day
+  set: user_drill_details {
+    fields: [
+      activity.email,
+      activity.active_user_org_unit_name,
+      count_actions
     ]
   }
 
   parameter: time_granularity {
-    view_label: "Gemini"
     label: "Time Granularity"
-    description: "Select the time grouping for trend charts (Daily, Weekly, Monthly)."
+    description: "Select the time grouping for trend charts. Options: Daily, Weekly, or Monthly trends."
     hidden: no
     type: unquoted
     default_value: "week"
@@ -61,9 +36,8 @@ view: gemini {
   }
 
   dimension: dynamic_activity_date {
-    view_label: "Gemini"
     label_from_parameter: time_granularity
-    description: "Changes the date granularity based on the 'Time Granularity' parameter."
+    description: "The dynamic date dimension that adjusts its granularity (Day, Week, Month) based on the 'Time Granularity' parameter selection."
     hidden: no
     sql:
     {% if time_granularity._parameter_value == 'month' %}
@@ -78,7 +52,7 @@ view: gemini {
   dimension: app_name {
     view_label: "Gemini"
     label: "App Name"
-    description: "The Google Workspace application where the Gemini activity occurred (e.g., Docs, Sheets, Meet)."
+    description: "The specific Google Workspace application where the Gemini interaction occurred (e.g., Docs, Sheets, Meet, Gmail)."
     hidden: no
     type: string
     sql: ${TABLE}.gemini_for_workspace.app_name ;;
@@ -88,7 +62,7 @@ view: gemini {
   dimension: feature_source {
     view_label: "Gemini"
     label: "Feature Source"
-    description: "The specific feature or UI element within the app that initiated the action (e.g., side_panel, chat_with_gemini)."
+    description: "The specific UI feature or entry point within the app used to trigger Gemini (e.g., 'side_panel', 'chat_with_gemini', 'help_me_write')."
     hidden: no
     type: string
     sql: ${TABLE}.gemini_for_workspace.feature_source ;;
@@ -97,7 +71,7 @@ view: gemini {
   dimension: action {
     view_label: "Gemini"
     label: "Action"
-    description: "The specific action performed by the user with Gemini (e.g., bulletize, catch_me_up)."
+    description: "The specific generative AI action performed by the user (e.g., 'summarize', 'bulletize', 'generate_image')."
     hidden: no
     type: string
     sql: ${TABLE}.gemini_for_workspace.action ;;
@@ -105,7 +79,7 @@ view: gemini {
 
   dimension: event_category {
     view_label: "Gemini"
-    description: "Categorizes the type of generative AI action event, such as 'active_generate' for direct user interactions or 'inactive' which represents a category where the user is not considered to be actively engaging with Gemini."
+    description: "The raw category of the event as reported by the API. Distinguishes between active user interactions ('active_generate') and passive system events."
     type: string
     sql: ${TABLE}.gemini_for_workspace.event_category ;;
   }
@@ -113,7 +87,7 @@ view: gemini {
   dimension: event_category_split {
     view_label: "Gemini"
     label: "Event Category"
-    description: "Summarized event category existing dimension in 2 active and inactive"
+    description: "Categorizes Gemini events into 'Active' (user-initiated) or 'Passive' (system-generated) to accurately measure user engagement."
     hidden: no
     type: string
     case: {
@@ -128,7 +102,7 @@ view: gemini {
   dimension: action_category {
     view_label: "Gemini"
     label: "Action Category"
-    description: "Clusters raw Gemini actions into high-level business categories (Creation, Summarization, Refinement, etc.)"
+    description: "High-level grouping of Gemini actions into business use cases: Content Creation, Summarization, Refinement & Editing, Interaction & Research, and Assistance & Discovery."
     hidden: no
     type: string
     case: {
@@ -159,9 +133,9 @@ view: gemini {
 
   measure: count_apps {
     hidden: no
-    label: " Distinct Apps"
+    label: "Distinct Apps"
     view_label: "Gemini"
-    description: "Count of all activity apps"
+    description: "The distinct count of Workspace applications where Gemini was used during the selected period."
     type: count_distinct
     allow_approximate_optimization: yes
     sql: ${app_name} ;;
@@ -170,9 +144,9 @@ view: gemini {
 
   measure: count_actions {
     hidden: no
-    label: "Unique actions"
+    label: "Count of actions"
     view_label: "Gemini"
-    description: "Distinct number of Actions"
+    description: "The total number of distinct Gemini actions (types of interactions) performed."
     type: count_distinct
     allow_approximate_optimization: yes
     sql: ${action} ;;
@@ -180,56 +154,58 @@ view: gemini {
   }
 
   measure: count_opportunity_gap {
-    view_label: "Gemini Adoption"
+    view_label: "Gemini"
+    group_label: "Adoption"
     label: "Non-Gemini Users (Gap)"
-    description: "Active Workspace users who have NOT used Gemini in this period."
+    description: "The number of Active Workspace users who have NOT used Gemini in the selected period. Calculated as (Total Active Workspace Users - Active Gemini Users)."
     hidden: no
     type: number
     # Logic: Total Workspace Users (Sidecar) - Active Gemini Users (This View)
     sql: ${workspace_benchmark_sidecar.count_core_users} - ${count_user} ;;
     link: {
       label: "View Opportunity Emails"
-      url: "/explore/workspace_audit_logs/activity_consolidated?fields=activity.email,activity.active_user_org_unit_name,activity.count&f[activity.record_type]=drive,gmail,docs,sheets,slides,meet,calendar&f[activity.active_user_org_unit_name]={{ workspace_benchmark_sidecar.ou_name._value | url_encode }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}&sorts=activity.count+desc&limit=500"
+      url: "/explore/workspace_audit_logs/activity_consolidated?fields=activity.email,activity.active_user_org_unit_name,activity.count&f[activity.record_type]=drive,gmail,docs,sheets,slides,meet,calendar,chat&f[activity.active_user_org_unit_name]={{ workspace_benchmark_sidecar.ou_name._value | url_encode }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}&sorts=activity.count+desc&limit=500"
     }
   }
 
   measure: real_penetration_rate {
-    view_label: "Gemini Adoption"
+    view_label: "Gemini"
+    group_label: "Adoption"
     label: "Real Penetration Rate %"
-    description: "Percentage of Active Workspace Users who are using Gemini."
+    description: "The percentage of Active Workspace Users who are active Gemini users. Calculated as (Active Gemini Users / Total Active Workspace Users)."
     hidden: no
     type: number
     sql: 1.0 * ${count_user} / NULLIF(${workspace_benchmark_sidecar.count_core_users}, 0) ;;
     value_format_name: percent_1
   }
 
-  measure: count {
-    drill_fields: [drill_details*]
-  }
-
   measure: count_sources {
     hidden: no
-    label: "Count of Source"
+    label: "Count of Sources"
     view_label: "Gemini"
-    description: "Distinct number of Sources"
+    description: "The distinct count of feature sources (entry points) used to interact with Gemini."
     type: count_distinct
     allow_approximate_optimization: yes
     sql: ${feature_source} ;;
   }
 
   measure: count_user {
-    label: "Active Gemini Users"
+    hidden: no
+    view_label: "Gemini"
+    group_label: "Adoption"
+    label: "Count of Gemini Users"
+    description: "The distinct count of users who have performed at least one active Gemini action in the selected period."
     type: count_distinct
     sql: ${email} ;;
-    drill_fields: [drill_details*]
+    drill_fields: [user_drill_details*]
   }
 
   # --- POP PERIOD OVER PERIOD LOGIC ---
 
   filter: date_filter {
     hidden: no
-    view_label: "_PoP"
-    description: "Use this date filter in combination with the timeframes dimension for dynamic date filtering"
+    view_label: "Period Over Period"
+    description: "Select the date range for comparison. This filter works in conjunction with the 'Timeframes' dimension."
     type: date
   }
 
@@ -260,7 +236,8 @@ view: gemini {
   }
 
   dimension: timeframes {
-    view_label: "_PoP"
+    view_label: "Period Over Period"
+    description: "Categorizes records into 'Selected Period', 'Previous Period', or 'Not in time period' based on the Date Filter."
     hidden: no
     type: string
     case: {
@@ -288,14 +265,16 @@ view: gemini {
 
   measure: selected_period_count_events {
     hidden: no
-    view_label: "_PoP"
+    view_label: "Period Over Period"
+    description: "Count of events in the selected date range."
     type: count
     filters: [is_current_period: "yes"]
     value_format_name: decimal_0
   }
   measure: previous_period_count_events {
     hidden: no
-    view_label: "_PoP"
+    view_label: "Period Over Period"
+    description: "Count of events in the previous date range (same duration immediately preceding the selected range)."
     type: count
     filters: [is_previous_period: "yes"]
     value_format_name: decimal_0
@@ -303,7 +282,8 @@ view: gemini {
 
   measure: selected_period_count_users {
     hidden: no
-    view_label: "_PoP"
+    view_label: "Period Over Period"
+    description: "Count of distinct users in the selected date range."
     type: count_distinct
     sql: ${email} ;;
     filters: [is_current_period: "yes"]
@@ -311,7 +291,8 @@ view: gemini {
   }
   measure: previous_period_count_users {
     hidden: no
-    view_label: "_PoP"
+    view_label: "Period Over Period"
+    description: "Count of distinct users in the previous date range."
     type: count_distinct
     sql: ${email} ;;
     filters: [is_previous_period: "yes"]
@@ -321,214 +302,4 @@ view: gemini {
   dimension: ytd_only {hidden:yes}
   dimension: mtd_only {hidden:yes}
   dimension: wtd_only {hidden:yes}
-}
-
-view: workspace_benchmark_sidecar {
-  derived_table: {
-    sql:
-      SELECT
-        ou_lookup.ou_name,
-        COUNT(DISTINCT activity.email) as active_core_users
-      FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
-      LEFT JOIN ${ou_user_lookup.SQL_TABLE_NAME} AS ou_lookup
-        ON activity.email = ou_lookup.email
-      WHERE
-        activity.record_type IN ('drive', 'gmail', 'docs', 'sheets', 'slides', 'meet', 'calendar')
-        AND activity.record_type != 'gemini_for_workspace'
-        AND {% condition activity.activity_date %} TIMESTAMP_MICROS(activity.time_usec) {% endcondition %}
-      GROUP BY 1
-    ;;
-  }
-
-  dimension: ou_name {
-    hidden: yes
-    primary_key: yes
-    sql: ${TABLE}.ou_name ;;
-  }
-
-  measure: count_core_users {
-    view_label: "Gemini Adoption"
-    label: "Total Active Workspace Users"
-    description: "Distinct users active in Core Apps (Docs, Drive, Gmail, etc.) in the selected period."
-    hidden: no
-    type: sum
-    sql: ${TABLE}.active_core_users ;;
-    link: {
-      label: "View User List (Core Workspace)"
-      url: "/explore/workspace_audit_logs/activity?fields=activity.email,activity.count&f[activity.record_type]=drive,gmail,docs,sheets,slides,meet,calendar&f[activity.active_user_org_unit_name]={{ ou_name._value | url_encode }}&f[activity.activity_date]={{ _filters['activity.activity_date'] | url_encode }}"
-    }
-  }
-}
-
-view: gemini_app_penetration {
-  derived_table: {
-    sql:
-      WITH universe_counts AS (
-        SELECT
-          {% if analysis_grain._parameter_value == 'total' %}
-             NULL as activity_date,
-          {% else %}
-             DATE_TRUNC(DATE(TIMESTAMP_MICROS(activity.time_usec)), {% parameter analysis_grain %}) AS activity_date,
-          {% endif %}
-
-          activity.record_type AS app_name,
-          COUNT(DISTINCT activity.email) AS total_users
-        FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
-        INNER JOIN ${ou_user_lookup.SQL_TABLE_NAME} AS ou_lookup
-          ON ou_lookup.json_ou_path = TO_JSON_STRING(activity.org_unit_name_path)
-        WHERE
-          activity.record_type IN ('chat', 'drive', 'gmail', 'meet')
-          AND {% condition date_filter %} TIMESTAMP_MICROS(activity.time_usec) {% endcondition %}
-          AND {% condition ou_filter %} ou_lookup.ou_id {% endcondition %}
-        GROUP BY 1, 2
-      ),
-      gemini_counts AS (
-        SELECT
-          {% if analysis_grain._parameter_value == 'total' %}
-             NULL as activity_date,
-          {% else %}
-             DATE_TRUNC(DATE(TIMESTAMP_MICROS(activity.time_usec)), {% parameter analysis_grain %}) AS activity_date,
-          {% endif %}
-
-          activity.gemini_for_workspace.app_name AS app_name,
-          COUNT(DISTINCT activity.email) AS ai_users
-        FROM `@{WORKSPACE_ANALYTICS_PROJECT_ID}.@{WORKSPACE_ANALYTICS_DATASET_NAME}.activity` AS activity
-        INNER JOIN ${ou_user_lookup.SQL_TABLE_NAME} AS ou_lookup
-          ON ou_lookup.json_ou_path = TO_JSON_STRING(activity.org_unit_name_path)
-        WHERE
-          activity.record_type = 'gemini_for_workspace'
-          AND activity.gemini_for_workspace.app_name IN ('chat', 'drive', 'gmail', 'meet')
-          AND {% condition date_filter %} TIMESTAMP_MICROS(activity.time_usec) {% endcondition %}
-          AND {% condition ou_filter %} ou_lookup.ou_id {% endcondition %}
-        GROUP BY 1, 2
-      )
-      SELECT
-        universe.activity_date,
-        universe.app_name,
-        COALESCE(universe.total_users, 0) AS universe_count,
-        COALESCE(gemini.ai_users, 0) AS gemini_count
-      FROM universe_counts AS universe
-      LEFT JOIN gemini_counts AS gemini
-        ON universe.app_name = gemini.app_name
-        AND (universe.activity_date = gemini.activity_date OR universe.activity_date IS NULL)
-    ;;
-  }
-
-# Filters & Parameters ---
-  filter: date_filter {
-    type: date
-    label: "Date Filter"
-  }
-
-  filter: ou_filter {
-    type: string
-    label: "OU Filter (ID)"
-    suggest_explore: gemini
-    suggest_dimension: ou_user_lookup.ou_id
-  }
-
-  parameter: analysis_grain {
-    type: unquoted
-    label: "Analysis Granularity"
-    description: "Choose 'Total Period' for summary or a Trend option for time series."
-    default_value: "week"
-
-    allowed_value: { label: "" value: "total" }
-    allowed_value: { label: "Daily Trend" value: "day" }
-    allowed_value: { label: "Weekly Trend" value: "week" }
-    allowed_value: { label: "Monthly Trend" value: "month" }
-  }
-
-  # DIMENSIONS ---
-  dimension: activity_raw {
-    hidden: yes
-    type: date
-    sql: ${TABLE}.activity_date ;;
-  }
-
-  dimension: activity_day {
-    hidden: yes
-    type: date
-    sql: ${TABLE}.activity_date ;;
-  }
-
-  dimension: activity_week {
-    hidden: yes
-    type: date_week
-    sql: ${TABLE}.activity_date ;;
-  }
-
-  dimension: activity_month {
-    hidden: yes
-    type: date_month
-    sql: ${TABLE}.activity_date ;;
-  }
-
-  dimension: app_name {
-    type: string
-    sql: ${TABLE}.app_name ;;
-    label: "Application"
-  }
-
-
-  dimension: dynamic_date {
-    label_from_parameter: analysis_grain
-    sql:
-    {% if analysis_grain._parameter_value == 'month' %}
-      ${activity_month}
-    {% elsif analysis_grain._parameter_value == 'week' %}
-      ${activity_week}
-    {% elsif analysis_grain._parameter_value == 'day' %}
-      ${activity_day}
-    {% else %}
-      'Total Period'
-    {% endif %} ;;
-  }
-
-  # PK
-  dimension: pk {
-    primary_key: yes
-    hidden: yes
-    sql: CONCAT(COALESCE(CAST(${activity_raw} AS STRING), 'TOT'), ${app_name}) ;;
-  }
-
-
-  measure: total_users {
-    type: sum
-    sql: ${TABLE}.universe_count ;;
-    label: "Total App Users"
-    link: {
-      label: "Drill Down Users"
-      url: "
-      {% if analysis_grain._parameter_value == 'total' %}
-      /explore/workspace_audit_logs/gemini?fields=activity.email,activity.count&f[activity.record_type]={{ app_name._value }}&f[activity.activity_date]={{ _filters['date_filter'] | url_encode }}
-      {% else %}
-      /explore/workspace_audit_logs/gemini?fields=activity.email,activity.count&f[activity.record_type]={{ app_name._value }}&f[activity.activity_date]={{ dynamic_date._value }}
-      {% endif %}
-      "
-    }
-  }
-
-  measure: gemini_users {
-    type: sum
-    sql: ${TABLE}.gemini_count ;;
-    label: "Gemini Active Users"
-    link: {
-      label: "Drill Down AI Users"
-      url: "
-      {% if analysis_grain._parameter_value == 'total' %}
-      /explore/workspace_audit_logs/gemini?fields=activity.email,gemini.count_actions&f[activity.record_type]=gemini_for_workspace&f[gemini.app_name]={{ app_name._value }}&f[activity.activity_date]={{ _filters['date_filter'] | url_encode }}
-      {% else %}
-      /explore/workspace_audit_logs/gemini?fields=activity.email,gemini.count_actions&f[activity.record_type]=gemini_for_workspace&f[gemini.app_name]={{ app_name._value }}&f[activity.activity_date]={{ dynamic_date._value }}
-      {% endif %}
-      "
-    }
-  }
-
-  measure: penetration_rate {
-    type: number
-    sql: 1.0 * ${gemini_users} / NULLIF(${total_users}, 0) ;;
-    label: "% Penetration"
-    value_format_name: percent_1
-  }
 }

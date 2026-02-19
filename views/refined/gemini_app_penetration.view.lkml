@@ -1,4 +1,5 @@
 include: "/views/pdt/gemini_penetration_engine.view.lkml"
+
 view: gemini_app_penetration {
   # --- DERIVED TABLE CONFIGURATION ---
   derived_table: {
@@ -12,7 +13,10 @@ view: gemini_app_penetration {
         ai_users
       FROM ${gemini_penetration_engine.SQL_TABLE_NAME}
       WHERE
+        -- 1. Filter by the selected Time Granularity
         grain = '{% parameter analysis_grain %}'
+
+      -- 2. Apply Date Filter
       AND ({% condition date_filter %} TIMESTAMP(activity_date) {% endcondition %} OR activity_date IS NULL)
       ;;
   }
@@ -22,13 +26,13 @@ view: gemini_app_penetration {
   filter: date_filter {
     type: date
     label: "Date Filter"
-    description: "Select the date range for the analysis."
+    description: "Select the date range for the analysis. This filters both the Numerator (Gemini Users) and Denominator (Total Users)."
   }
 
   filter: ou_name_filter {
     type: string
     label: "Organizational Unit"
-    description: "Filter by Organizational Unit."
+    description: "Filter by Organizational Unit. Uses the OU of the active user."
     suggest_explore: gemini
     suggest_dimension: ou_user_lookup.ou_name
     sql: {% condition ou_name_filter %} ${ou_name} {% endcondition %} ;;
@@ -37,7 +41,7 @@ view: gemini_app_penetration {
   parameter: analysis_grain {
     type: unquoted
     label: "Time Granularity"
-    description: "Select the time grouping for trend charts."
+    description: "Select the time grouping for trend charts. Options: Daily, Weekly, Monthly, or Total Summary."
     default_value: "week"
     allowed_value: { label: "Total Period (Summary)" value: "total" }
     allowed_value: { label: "Daily Trend" value: "day" }
@@ -81,7 +85,7 @@ view: gemini_app_penetration {
     type: string
     sql: ${TABLE}.app_name ;;
     label: "App Name"
-    description: "The name of the Google Workspace application."
+    description: "The name of the Google Workspace application (e.g., Docs, Sheets, Slides). Standard 'Drive' activity is automatically mapped to these specific apps."
   }
 
   dimension: dynamic_date {
@@ -111,7 +115,7 @@ view: gemini_app_penetration {
     type: sum
     sql: ${TABLE}.total_users ;;
     label: "Count of Total App Users"
-    description: "The total number of distinct users active in the specific application (Denominator)."
+    description: "The total number of distinct users active in the specific application (Denominator). Includes standard usage (e.g., editing a Doc) to ensure accurate penetration calculation."
     link: {
       label: "List of Total App Users"
       url: "
@@ -145,7 +149,7 @@ view: gemini_app_penetration {
     type: number
     sql: 1.0 * ${gemini_users} / NULLIF(${total_users}, 0) ;;
     label: "Penetration Rate"
-    description: "The percentage of total app users who also use Gemini (Gemini Users / Total App Users)."
+    description: "The percentage of total app users who also use Gemini. Calculated as (Gemini Users / Total App Users)."
     value_format_name: percent_1
   }
 }
