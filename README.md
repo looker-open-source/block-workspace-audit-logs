@@ -125,6 +125,7 @@ The usage view is extended to a specific view for: [usage_customer](./views/refi
 - [activity_meet_facts](./views/pdt/activity_meet_facts.view.lkml) - Metrics for each conference and handles UNNESTING for participant level data
 - [ou_user_lookup](./views/pdt/ou_user_lookup.view.lkml) - This fact table shows the mapping of users to Organizational Unit(s). It is used for active metrics per OU and for the OU lookup for drive target users
 - [usage_user_drive_facts](./views/pdt/usage_user_drive_facts.view.lkml) - 1, 7, and 30 day roll up facts for active users across docs, sheets, and slides by Date (use activity_active_user_facts for breakdown by OU)
+- [gemini_app_penetration](./views/pdt/gemini_app_penetration.view.lkml) - Performance-optimized fact table that unifies standard Workspace usage and Gemini usage to calculate accurate penetration rates per application.
 
 #### OU Lookup
 
@@ -187,6 +188,34 @@ The [model](./workspace_audit_logs.model.lkml) includes all the explore definiti
 
 - [Adoption and Collaboration](/dashboards/workspace_audit_logs::adoption_and_collaboration) - This dashboard contains internal utilization metrics on product usage activity, collaboration between Organizational Units, andfile sharing / creation
 - [Security Audit](/dashboards/workspace_audit_logs::security_audit) - This dashboard has an external focus around how workspace is interacting with users outside your org, focusing on events like data exfiltration, suspicious events, and spam emails
+- [Gemini Adoption](/dashboards/workspace_audit_logs::gemini_adoption) - This dashboard focuses on Generative AI adoption, providing insights into active users, app penetration rates, and high-level trends across the organization.
+
+# Gemini Adoption & App Penetration
+
+The Gemini Adoption implementation is designed to provide accurate and actionable insights into how Generative AI is being utilized across Google Workspace.
+
+### 1. Activity Gemini View (`activity_gemini.view.lkml`)
+This refined view extends the base `activity` explore to add specific logic for Gemini events.
+- **Documentation:** [Gemini in Workspace Apps Activity Events](https://developers.google.com/workspace/admin/reports/v1/appendix/activity/gemini-in-workspace-apps)
+- **Key Features:**
+    - **Adoption Metrics:** Measures `count_user` (Active Gemini Users) and `real_penetration_rate`.
+    - **Action Categories:** Groups raw actions into meaningful business categories like "Content Creation", "Summarization", and "Refinement".
+    - **Opportunity Gap:** Identifies the number of active Workspace users who have *not* yet used Gemini.
+
+### 2. App Penetration Implementation (`gemini_app_penetration.view.lkml`)
+To accurately calculate the **Penetration Rate** (Gemini Users / Total Users) per application, we implemented a robust **PDT (Persistent Derived Table)** strategy.
+
+*   **The Challenge:** Standard audit logs often group activity under broad types like `drive`, whereas Gemini logs are specific (`docs`, `sheets`).
+*   **The Solution:** We implemented a **Unified App Mapping** logic:
+    *   **Standard Drive:** Split into `docs`, `sheets`, and `slides` based on `doc_type`.
+    *   **Standard Apps:** `gmail`, `meet`, `chat` are mapped directly.
+    *   **Gemini Standalone:** Apps like `gemini_app` and `workflows` are tracked for volume.
+*   **Performance:** The logic uses a multi-tier PDT approach (`gemini_activity_base` -> `gemini_penetration_engine`) to pre-aggregate counts by Day/Week/Month, ensuring instant dashboard performance.
+
+### 3. Workspace Benchmark (`workspace_benchmark_sidecar.view.lkml`)
+This view provides the "Universe" denominator for calculating company-wide adoption.
+- **Logic:** It counts the distinct number of users active in **ANY** core Workspace app (`drive`, `gmail`, `meet`, `chat`, `calendar`) over the last 30 days.
+- **Purpose:** Enables the `real_penetration_rate` calculation by providing a consistent baseline of "Total Active Employees".
 
 # FAQS
 
