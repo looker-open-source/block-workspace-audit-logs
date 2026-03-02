@@ -478,3 +478,118 @@ explore: +drive {
     }
   }
 }
+
+# Place in `workspace_audit_logs` model
+explore: +gemini {
+  aggregate_table: rollup_gemini_date_ou {
+    query: {
+      dimensions: [
+        activity.activity_date,
+        activity.json_ou_path,
+        ou_lookup.ou_id,
+        activity.event_type,
+        activity.event_name,
+      ]
+      measures: [
+        activity.count_user,
+        activity.count_actions,
+        activity.count_apps,
+        activity.count_sources,
+        ]
+      filters: [
+        activity.record_type: "gemini_for_workspace"
+      ]
+    }
+
+    materialization: {
+      datagroup_trigger: daily
+      partition_keys: [activity.activity_date]
+      increment_key:  activity.activity_date
+      increment_offset: 1
+    }
+  }
+
+  aggregate_table: rollup_gemini_week_ou {
+    query: {
+      dimensions: [
+        activity.activity_week,
+        activity.json_ou_path,
+        ou_lookup.ou_id,
+        activity.event_type,
+        activity.event_name,
+      ]
+      measures: [
+        activity.count_actions,
+        activity.count_apps,
+        activity.count_sources,
+        activity.count_user
+        ]
+      filters: [
+        activity.record_type: "gemini_for_workspace"
+      ]
+    }
+
+    materialization: {
+      datagroup_trigger: weekly
+      partition_keys: [activity.activity_week]
+      increment_key:  activity.activity_week
+      increment_offset: 1
+    }
+  }
+
+  aggregate_table: rollup_gemini_month_ou {
+    query: {
+      dimensions: [
+        activity.activity_month,
+        activity.json_ou_path,
+        ou_lookup.ou_id,
+        activity.event_type,
+        activity.event_name,
+      ]
+      measures: [
+        activity.count_actions,
+        activity.count_apps,
+        activity.count_sources,
+        activity.count_user
+      ]
+      filters: [
+        activity.record_type: "gemini_for_workspace"
+      ]
+    }
+
+    materialization: {
+      datagroup_trigger: monthly
+      partition_keys: [activity.activity_month]
+      increment_key:  activity.activity_month
+      increment_offset: 1
+    }
+  }
+
+  aggregate_table: rollup_gemini_year_ou {
+    query: {
+      dimensions: [
+        activity.activity_year,
+        activity.json_ou_path,
+        ou_lookup.ou_id,
+        activity.event_type,
+        activity.event_name,
+      ]
+      measures: [
+        activity.count_actions,
+        activity.count_apps,
+        activity.count_sources,
+        activity.count_user
+      ]
+      filters: [
+        activity.record_type: "gemini_for_workspace"
+      ]
+    }
+
+    materialization: {
+      datagroup_trigger: yearly
+      partition_keys: [activity.activity_year]
+      increment_key:  activity.activity_year
+      increment_offset: 1
+    }
+  }
+}

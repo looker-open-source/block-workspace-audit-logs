@@ -103,4 +103,41 @@ view: sets {
       activity.rules__matched_trigger
     ]
   }
+
+  set: activity_gemini_users {
+    fields: [
+      activity.email,
+      activity.count,
+      activity.count_actions,
+      activity.count_apps
+    ]
+  }
+
+  set: activity_gemini_apps {
+    fields: [
+      activity.app_name,
+      activity.count,
+      activity.count_actions,
+      activity.count_user
+    ]
+  }
+
+  set: drill_details {
+    fields: [
+      activity.email,
+      activity.activity_date,
+      activity.org_unit_name,
+      activity.event_name,
+      app_name,
+      action
+    ]
+  }
+
+  set: user_drill_details {
+    fields: [
+      activity.email,
+      activity.active_user_org_unit_name,
+      count_actions
+    ]
+  }
 }
