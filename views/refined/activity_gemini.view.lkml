@@ -5,25 +5,6 @@ include: "activity.view"
 view: gemini {
   extends: [activity]
 
-  set: drill_details {
-    fields: [
-      activity.email,
-      activity.activity_date,
-      activity.org_unit_name,
-      activity.event_name,
-      app_name,
-      action
-    ]
-  }
-
-  set: user_drill_details {
-    fields: [
-      activity.email,
-      activity.active_user_org_unit_name,
-      count_actions
-    ]
-  }
-
   parameter: time_granularity {
     label: "Time Granularity"
     description: "Select the time grouping for trend charts. Options: Daily, Weekly, or Monthly trends."

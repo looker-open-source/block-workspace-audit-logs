@@ -121,4 +121,23 @@ view: sets {
       activity.count_user
     ]
   }
+
+  set: drill_details {
+    fields: [
+      activity.email,
+      activity.activity_date,
+      activity.org_unit_name,
+      activity.event_name,
+      app_name,
+      action
+    ]
+  }
+
+  set: user_drill_details {
+    fields: [
+      activity.email,
+      activity.active_user_org_unit_name,
+      count_actions
+    ]
+  }
 }
