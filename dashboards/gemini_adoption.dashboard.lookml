@@ -552,9 +552,9 @@
     width: 24
     height: 9
     tab_name: ''
-  - name: " (Copy)"
+  - name: "Engagement subtitle"
     type: text
-    title_text: " (Copy)"
+    title_text: "Engagement subtitle"
     subtitle_text: ''
     body_text: '[{"type":"h1","children":[{"text":"Engagement"}],"align":"center"}]'
     rich_content_json: '{"format":"slate"}'
@@ -864,8 +864,8 @@
     width: 24
     height: 7
     tab_name: ''
-  - title: Interactions
-    name: Interactions (2)
+  - title: Interactions Count
+    name: Interactions Count
     model: workspace_audit_logs
     explore: gemini
     type: marketplace_viz_multiple_value::multiple_value-marketplace
