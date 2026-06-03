@@ -1,6 +1,6 @@
 # Google Workspace Analytics Audit Logs [BETA]
 
-**This is not an oficially supported Google product.**
+This is not an officially supported Google product. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
 
 The reports made available in the Workspace Analytics Block enable customers to get insight into the areas of Workspace Adoption, Collaboration and Security. This allows customers to review the effectiveness of Google Workspace within their organization and highlights any areas that may need improvement through targeted training outreach or other specific guidance.
 
