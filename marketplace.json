@@ -3,7 +3,7 @@
   "category_label": "Models",
   "branding": {
     "badge": "Beta",
-    "image_uri": "https://marketplace-api.looker.com/block-icons/gworkspace.png",
+    "image_uri": "https://static-a.cdn.looker.app/marketplace/block-icons/gworkspace.png",
     "tagline": "Get insights into adoption, collaboration and security across Google Workspace and Gemini for Google Workspace."
   },
   "constants": {
